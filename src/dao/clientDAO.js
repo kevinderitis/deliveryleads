@@ -2,11 +2,12 @@ import Client from './models/clientModel.js';
 
 import db from './db.js';
 
-const createNewClient = async (name, email, phone) => {
+const createNewClient = async (name, email, password, phone) => {
     try {
         const newClient = new Client({
             name,
             email,
+            password,
             phone
         });
         await newClient.save();
@@ -77,9 +78,8 @@ const getClientByEmail = async (email) => {
     try {
         const client = await Client.findOne({ email: email });
         if (!client) {
-            throw new Error('Cliente no encontrado');
+            console.log('Cliente no encontrado')
         }
-        console.log('Cliente encontrado:', client);
         return client;
     } catch (error) {
         console.error('Error al obtener cliente por correo electrónico:', error.message);

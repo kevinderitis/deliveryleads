@@ -34,10 +34,10 @@ export const updateClient = async (req, res) => {
 };
 
 export const createClient = async (req, res) => {
-    const { name, email, phone } = req.body;
+    const { name, email, phone, password } = req.body;
 
     try {
-        const newClient = await createNewClient(name, email, phone);
+        const newClient = await createNewClient(name, email, password, phone);
         res.status(200).json(newClient);
     } catch (error) {
         console.error('Error al crear el cliente:', error);

@@ -2,16 +2,18 @@ import mongoose from 'mongoose';
 
 const clientSchema = new mongoose.Schema({
   name: {
-    type: String,
-    unique: true,
+    type: String
   },
   email: {
     type: String,
+    required: true,
     unique: true,
   },
   phone: {
-    type: String,
-    unique: true
+    type: String
+  },
+  password: {
+    type: String
   }
 });
 
