@@ -6,9 +6,11 @@ import paymentRouter from './src/routes/paymentRouter.js';
 import authRouter from './src/routes/authRouter.js';
 import session from 'express-session';
 import passport from './src/config/passport.js';
+import cors from 'cors';
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));

@@ -13,7 +13,7 @@ export const signup = async (req, res) => {
 
         const newUser = await createNewClient(name, email, hashedPassword);
 
-        res.status(201).send(`Usuario creado: ${newUser.email}`);
+        res.status(201).send({ result: `Usuario creado: ${newUser.email}` });
     } catch (error) {
         console.error(error);
         res.status(500).send(error.message);
@@ -32,7 +32,7 @@ export const login = async (req, res) => {
 
         if (passwordMatch) {
             req.session.user = user;
-            res.redirect('/index.html');
+            res.send({ result: `Acceso permitido: ${user.email}` });
         } else {
             return res.status(401).send('Nombre de usuario o contraseña incorrectos');
         }

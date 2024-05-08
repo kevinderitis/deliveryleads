@@ -42,6 +42,32 @@ const getOrderById = async (orderId) => {
   }
 };
 
+const getOrdersByClientEmail = async email => {
+  try {
+    const orders = await Order.findMany({ email });
+
+    if (!orders || orders.length === 0) {
+      throw new Error('No se encontraron órdenes activas para este cliente');
+    }
+
+    return orders;
+  } catch (error) {
+    console.error('Error al obtener órdenes por email:', error.message);
+    throw new Error('No se pudieron encontrar órdenes activas para este cliente');
+  }
+};
+
+const getActiveOrdersCountByClientEmail = async email => {
+  try {
+    const activeOrdersCount = await Order.countDocuments({ email, delivered: false });
+    return activeOrdersCount;
+  } catch (error) {
+    console.error('Error al obtener la cantidad de órdenes activas por email:', error.message);
+    throw new Error('No se pudo obtener la cantidad de órdenes activas para este cliente');
+  }
+};
+
+
 const getOldestActiveOrder = async (orderId) => {
   try {
     const order = await Order.findOne({ delivered: false }).sort({ updatedAt: 1 }).limit(1);
@@ -100,4 +126,4 @@ const deleteOrderById = async (orderId) => {
   }
 };
 
-export { createNewOrder, getAllOrders, getOrderById, updateOrderById, deleteOrderById, getOldestActiveOrder, updateOrderByOrderId };
+export { createNewOrder, getAllOrders, getOrderById, updateOrderById, deleteOrderById, getOldestActiveOrder, updateOrderByOrderId, getOrdersByClientEmail, getActiveOrdersCountByClientEmail };
