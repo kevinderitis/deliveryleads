@@ -44,11 +44,7 @@ const getOrderById = async (orderId) => {
 
 const getOrdersByClientEmail = async email => {
   try {
-    const orders = await Order.findMany({ email });
-
-    if (!orders || orders.length === 0) {
-      throw new Error('No se encontraron órdenes activas para este cliente');
-    }
+    const orders = await Order.find({ email });
 
     return orders;
   } catch (error) {
@@ -68,17 +64,47 @@ const getActiveOrdersCountByClientEmail = async email => {
 };
 
 
-const getOldestActiveOrder = async (orderId) => {
+// const getOldestActiveOrder = async (orderId) => {
+//   try {
+//     const order = await Order.findOne({ delivered: false }).sort({ updatedAt: 1 }).limit(1);
+//     if (!order) {
+//       throw new Error('Orden no encontrada');
+//     }
+//     console.log('Orden encontrada:', order);
+//     return order;
+//   } catch (error) {
+//     console.error('Error al obtener orden por ID:', error.message);
+//     throw new Error('No se pudo encontrar la orden');
+//   }
+// };
+
+const getOldestActiveOrder = async () => {
   try {
-    const order = await Order.findOne({ delivered: false }).sort({ updatedAt: 1 }).limit(1);
-    if (!order) {
+    const orders = await Order.aggregate([
+      { $match: { delivered: false } },
+      {
+        $lookup: {
+          from: 'clients',
+          localField: 'email',
+          foreignField: 'email',
+          as: 'client'
+        }
+      },
+      { $unwind: '$client' },
+      { $match: { 'client.state': true } },
+      { $sort: { updatedAt: 1 } },
+      { $limit: 1 }
+    ]);
+
+    if (orders.length === 0) {
       throw new Error('Orden no encontrada');
     }
-    console.log('Orden encontrada:', order);
-    return order;
+
+    const oldestActiveOrder = orders[0];
+    return oldestActiveOrder;
   } catch (error) {
-    console.error('Error al obtener orden por ID:', error.message);
-    throw new Error('No se pudo encontrar la orden');
+    console.error('Error al obtener la orden más antigua activa:', error.message);
+    throw new Error('No se pudo encontrar la orden más antigua activa');
   }
 };
 

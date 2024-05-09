@@ -35,18 +35,4 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-
-// passport.serializeUser(function(user, done) {
-//   done(null, user._id);
-// });
-
-// passport.deserializeUser(async function(id, done) {
-//   try {
-//     const user = await User.findById(ObjectId(id));
-//     done(null, user);
-//   } catch (err) {
-//     done(err);
-//   }
-// });
-
 export default passport;

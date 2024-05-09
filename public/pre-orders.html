@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/tablelist/css/style.css">
+</head>
+<body>
+    <button class="btn btn--primary logout-btn" onclick="logout()" style="position: absolute; top: 20px; right: 20px;">
+        Log out
+    </button>
+    <div class="table-widget">
+        <table>
+            <caption>
+                Pre orders
+                <span class="table-row-count"></span>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="order-rows">
+                <!-- Rows will be generated dynamically -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        <ul class="pagination">
+                            <!-- Pagination links will be generated dynamically -->
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/constants.js"></script>
+    <script src="assets/tablelist/js/pre-orders.js"></script>
+</body>
+</html>

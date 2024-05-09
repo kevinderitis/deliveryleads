@@ -1,4 +1,5 @@
 import Client from './models/clientModel.js';
+import { getUserByEmail } from './userDAO.js';
 
 import db from './db.js';
 
@@ -60,6 +61,38 @@ const updateClientById = async (clientId, newData) => {
     }
 };
 
+const updateClientPhoneByEmail = async (phone, email) => {
+    try {
+        const updatedClient = await Client.findOneAndUpdate({ email }, { phone }, {
+            new: true,
+        });
+        if (!updatedClient) {
+            throw new Error('Cliente no encontrado');
+        }
+        console.log('Cliente actualizado:', updatedClient);
+        return updatedClient;
+    } catch (error) {
+        console.error('Error al actualizar cliente por ID:', error.message);
+        throw new Error('No se pudo actualizar el cliente');
+    }
+};
+
+const updateClientStateByEmail = async (state, email) => {
+    try {
+        const updatedClient = await Client.findOneAndUpdate({ email }, { state }, {
+            new: true,
+        });
+        if (!updatedClient) {
+            throw new Error('Cliente no encontrado');
+        }
+        console.log('Cliente actualizado:', updatedClient);
+        return updatedClient;
+    } catch (error) {
+        console.error('Error al actualizar cliente por ID:', error.message);
+        throw new Error('No se pudo actualizar el cliente');
+    }
+};
+
 const deleteClientById = async (clientId) => {
     try {
         const deletedClient = await Client.findByIdAndDelete(clientId);
@@ -87,5 +120,18 @@ const getClientByEmail = async (email) => {
     }
 };
 
+const isAdmin = async (email) => {
+    try {
+        const client = await getUserByEmail(email);
+        if (!client) {
+            console.log('Cliente no encontrado')
+        }
+        return client ? true : false;
+    } catch (error) {
+        console.error('Error al obtener cliente por correo electrónico:', error.message);
+        throw new Error('No se pudo encontrar el cliente');
+    }
+};
 
-export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail };
+
+export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin };

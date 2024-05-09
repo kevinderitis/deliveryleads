@@ -28,8 +28,7 @@ export const updateOrder = async (req, res) => {
 
         res.status(200).json(updatedOrder);
     } catch (error) {
-        console.error('Error al actualizar la orden por ID:', error.message);
-        res.status(500).json({ error: 'Error al actualizar la orden' });
+        res.status(500).json({ error });
     }
 };
 

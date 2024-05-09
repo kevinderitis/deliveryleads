@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/profile/css/style.css">
+</head>
+
+<body>
+    <div class="profile">
+        <button class="btn btn--primary logout-btn" onclick="logout()" style="position: absolute; top: 20px; right: 20px;">
+            Log out
+        </button>
+        <header class="profile__header">
+            <div class="profile__highlight__wrapper">
+                <div class="profile__highlight">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart"
+                        width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <circle cx="6" cy="19" r="2"></circle>
+                        <circle cx="17" cy="19" r="2"></circle>
+                        <path d="M17 17h-11v-14h-2"></path>
+                        <path d="M6 5l14 1l-1 7h-13"></path>
+                    </svg>
+                    <a id="ordersNumber"></a>
+                </div>
+                Ordenes activas
+            </div>
+            <!-- <div class="profile__avatar">
+                <img src="assets/profile/profile.jpg" loading="lazy" alt="Mentor profile">
+            </div> -->
+            <div class="profile__highlight__wrapper">
+                <div class="profile__highlight">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chart-bar" width="24"
+                        height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <rect x="3" y="12" width="6" height="8" rx="1"></rect>
+                        <rect x="9" y="8" width="6" height="12" rx="1"></rect>
+                        <rect x="15" y="4" width="6" height="16" rx="1"></rect>
+                        <line x1="4" y1="20" x2="18" y2="20"></line>
+                    </svg>
+                    <a id="leadsNumber"></a>
+                </div>
+                Ordenes pendientes
+            </div>
+        </header>
+        <div class="profile__name">
+            <h2>Name</h2>
+        </div>
+        <main>
+            <div class="tabs-wrapper">
+                <ul class="tabs">
+                    <li class="active">
+                        <a id="tab1" href="#ordenes">Ordenes</a>
+                    </li>
+                    <li>
+                        <a id="tab2" href="#draft">Draft</a>
+                    </li>
+                    <li>
+                        <a id="tab3" href="#datos">Datos</a>
+                    </li>
+                    <button id="adminBtn" class="btn btn--primary" style="display: none;" onclick="redirectToAdmin()">
+                        Panel de administrador
+                    </button>
+                    <li id="active-bg"></li>
+                </ul>
+            </div>
+            <div id="tab1-content" class="tab-content tab-content--active">
+                <div id="tab1-content" class="tab-content tab-content--active">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Número de Orden</th>
+                                <th>Correo Electrónico</th>
+                                <th>Cantidad</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tab2-content" class="tab-content">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Correo Electrónico</th>
+                            <th>Cantidad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="draft-orders-body">
+                        <!-- Aquí se generarán las filas de la tabla dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="tab3-content" class="tab-content">
+                <p>
+                    Whatsapp:
+                </p>
+                <table class="orders-table">
+                    <tbody>
+                        <tr>
+                            <td id="whatsapp-number"></td>
+                            <td>
+                                <button onclick="testWhatsapp()" style="background-color: transparent; border: none;">
+                                    <img src="assets/profile/wpp-icon.svg" alt="Editar" width="24" height="24">
+                                </button>
+                            </td>
+                            <td>
+                                <button onclick="editNumber()" style="background-color: transparent; border: none;">
+                                    <img src="assets/profile/edit.svg" alt="Editar" width="24" height="24">
+                                </button>
+                            </td>
+                            <td id="stop-td" style="display: none;">
+                                <button id="stop-button" onclick="changeClientState(false)"
+                                    style="background-color: transparent; border: none;">
+                                    <img src="assets/profile/stop.svg" alt="Editar" width="24" height="24">
+                                </button>
+                            </td>
+                            <td id="start-td" style="display: none;">
+                                <button id="start-button" onclick="changeClientState(true)"
+                                    style="background-color: transparent; border: none;">
+                                    <img src="assets/profile/start.svg" alt="Editar" width="24" height="24">
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <button class="btn btn--primary" onclick="window.location.href = 'new-order.html?type=pre';">
+            Nueva orden
+        </button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/constants.js"></script>
+    <script src="assets/profile/js/script.js"></script>
+</body>
+
+</html>

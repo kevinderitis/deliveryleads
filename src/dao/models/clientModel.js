@@ -14,6 +14,10 @@ const clientSchema = new mongoose.Schema({
   },
   password: {
     type: String
+  },
+  state: {
+    type: Boolean,
+    default: true
   }
 });
 

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { getClientByEmail, createNewClient } from '../dao/clientDAO.js';
+import { getClientByEmail, createNewClient, isAdmin } from '../dao/clientDAO.js';
 
 export const signup = async (req, res) => {
     const { name, email } = req.body;
@@ -32,12 +32,29 @@ export const login = async (req, res) => {
 
         if (passwordMatch) {
             req.session.user = user;
-            res.send({ result: `Acceso permitido: ${user.email}` });
+            let admin = await isAdmin(user.email);
+            res.send({ result: `Acceso permitido: ${user.email}`, admin });
         } else {
             return res.status(401).send('Nombre de usuario o contraseña incorrectos');
         }
     } catch (error) {
         console.error(error);
         res.status(500).send('Error interno del servidor');
+    }
+};
+
+export const logout = async (req, res) => {
+    try {
+        req.logout();
+        await new Promise((resolve, reject) => {
+            req.session.destroy((err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+        res.send({ result: 'Logout ok'})
+    } catch (error) {
+        console.error('Error al cerrar la sesión:', error);
+        res.status(500).send('Error al cerrar la sesión');
     }
 };

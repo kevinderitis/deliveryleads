@@ -4,7 +4,7 @@ export const isAuthenticated = (req, res, next) => {
     if (req.session.user || req.isAuthenticated()) {
         next();
     } else {
-        res.redirect('/login.html');
+        res.status(401).send({ error: 'Not authenticated'});
     }
 };
 
