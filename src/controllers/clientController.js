@@ -1,6 +1,7 @@
 import { getAllClients, updateClientById, createNewClient, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin } from "../dao/clientDAO.js";
 import { getClientOrders } from "../services/orderService.js";
 import { getClientDraftOrders } from "../services/draftOrderService.js";
+import { calculateTotalLeads } from "../services/clientService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -24,6 +25,7 @@ export const getData = async (req, res) => {
         const clientOrders = await getClientOrders(email);
         const clientDraftOrders = await getClientDraftOrders(email);
         const admin = await isAdmin(email);
+        const totalLeads = calculateTotalLeads(clientOrders);
 
         if (!client) {
             return res.status(404).json({ message: 'No se encontraron clientes' });
@@ -38,7 +40,8 @@ export const getData = async (req, res) => {
             phone: client.phone,
             ordersObj: clientOrders,
             clientState: client.state,
-            admin
+            admin,
+            totalLeads
         };
 
         res.status(200).json(clientDTO);

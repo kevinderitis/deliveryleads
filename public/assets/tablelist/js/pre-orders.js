@@ -62,8 +62,8 @@ const renderOrders = async () => {
     const mappedRecords = orders
         .slice(startIndex, endIndex)
         .map(order => {
-            const status = order.delivered ? 'active' : 'inactive';
-            const statusText = order.delivered ? 'Entregado' : 'Pendiente';
+            const status = order.approved ? 'active' : 'inactive';
+            const statusText = order.approved ? 'Aprobado' : 'Pendiente';
             const orderDate = new Date(order.updatedAt).toLocaleDateString();
             return `<tr>
                 <td>${orderDate}</td>
@@ -80,11 +80,11 @@ const renderOrders = async () => {
                     </span>
                 </td>
                 <td>${order.quantity}</td>
-                <td>
+                ${!order.approved ? `<td>
                 <button onclick="approvePreOrder('${order._id}')">
-                <img src="assets/order/approve.svg" alt="Icono" width="24" height="24" style="background-color: transparent; border: none;">
+                    <img src="assets/order/approve.svg" alt="Icono" width="24" height="24" style="background-color: transparent; border: none;">
                 </button>
-                </td>
+            </td>` : ''}
             </tr>`;
         });
 

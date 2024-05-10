@@ -18,7 +18,7 @@ const createNewDraftOrder = async (quantity, email, orderId) => {
 
 const getAllDraftOrders = async () => {
   try {
-    const orders = await Draft.find();
+    const orders = await Draft.find().sort({ createdAt: -1 });
     console.log('Pre ordenes encontradas:', orders);
     return orders;
   } catch (error) {

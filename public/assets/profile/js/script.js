@@ -193,11 +193,12 @@ async function fetchDataFromServer() {
     const phone = data.phone;
     const clientState = data.clientState;
     const admin = data.admin;
+    const leads = data.totalLeads;
 
     toggleAdminButton(admin);
     toggleClientState(clientState);
     insertName(nombre);
-    setOrdersAndLeads(ordenesActivas, leadsRecibidos);
+    setOrdersAndLeads(ordenesActivas, leads);
     setWhatsAppNumber(phone)
     setOrderTable(orders)
     setOrderTable(draft, true)

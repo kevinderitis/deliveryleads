@@ -9,3 +9,15 @@ export const getClientByEmailService = async email => {
         throw error;
     }
 };
+
+export const calculateTotalLeads = orders => {
+    let totalQuantity = 0;
+
+    orders.forEach((order) => {
+        if (!order.delivered) {
+            totalQuantity += order.quantity;
+        }
+    });
+
+    return totalQuantity;
+};

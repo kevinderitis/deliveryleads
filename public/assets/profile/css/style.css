@@ -1,23 +1,42 @@
 :root {
-    --primary: #FF5050; /* Rojo primario */
-    --primary-darker: #CC0000; /* Rojo oscuro */
-    --bg: #FE5B5B; /* Color de fondo */
-    --white: #FFF; /* Blanco */
-    --profile-bg: #FFF; /* Fondo del perfil */
-    --socials-bg: #F9FAFC; /* Fondo de redes sociales */
-    --highlight-bg: #F9FAFC; /* Color de fondo destacado */
-    --text-bg: #878789; /* Color de fondo del texto */
-    --text: #797C83; /* Color de texto */
-    --border-color: #F4F4F4; /* Color del borde */
-    --social-color: #6B6C6E; /* Color de redes sociales */
-    --active: #7774B5; /* Color activo */
-    --tab-bg: #EBE9FF; /* Color de fondo de las pestañas */
-    --tabs-border: #F2F6F5; /* Color del borde de las pestañas */
-    --tab-width: 7rem; /* Ancho de las pestañas */
-    --tabs-gap: 0rem; /* Espaciado entre pestañas */
-    --tab-radius: 0.4rem; /* Radio de las esquinas de las pestañas */
-    --scrollbar-thumb: #e4e3f3; /* Color del pulgar del scrollbar */
-    --scrollbar-bg: #F2F6F5; /* Color de fondo del scrollbar */
+    --primary: #FF5050;
+    /* Rojo primario */
+    --primary-darker: #CC0000;
+    /* Rojo oscuro */
+    --bg: #FE5B5B;
+    /* Color de fondo */
+    --white: #FFF;
+    /* Blanco */
+    --profile-bg: #FFF;
+    /* Fondo del perfil */
+    --socials-bg: #F9FAFC;
+    /* Fondo de redes sociales */
+    --highlight-bg: #F9FAFC;
+    /* Color de fondo destacado */
+    --text-bg: #878789;
+    /* Color de fondo del texto */
+    --text: #797C83;
+    /* Color de texto */
+    --border-color: #F4F4F4;
+    /* Color del borde */
+    --social-color: #6B6C6E;
+    /* Color de redes sociales */
+    --active: #7774B5;
+    /* Color activo */
+    --tab-bg: #EBE9FF;
+    /* Color de fondo de las pestañas */
+    --tabs-border: #F2F6F5;
+    /* Color del borde de las pestañas */
+    --tab-width: 7rem;
+    /* Ancho de las pestañas */
+    --tabs-gap: 0rem;
+    /* Espaciado entre pestañas */
+    --tab-radius: 0.4rem;
+    /* Radio de las esquinas de las pestañas */
+    --scrollbar-thumb: #e4e3f3;
+    /* Color del pulgar del scrollbar */
+    --scrollbar-bg: #F2F6F5;
+    /* Color de fondo del scrollbar */
 }
 
 
@@ -66,8 +85,8 @@ body {
     border-radius: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 50rem;
-    min-width: 20rem;
+    max-width: 10rem;
+    min-width: 50rem;
     margin: 0 auto;
     gap: 0.75rem;
     display: flex;
@@ -360,7 +379,7 @@ body {
 .tab-btn {
     padding: 1rem 2rem;
     font-size: 1.2rem;
-    background-color: #c9220c; 
+    background-color: #c9220c;
     color: white;
     border: none;
     border-radius: 10px;
@@ -369,7 +388,8 @@ body {
 }
 
 .tab-btn:hover {
-    background-color: #5f1106; /* Verde más oscuro */
+    background-color: #5f1106;
+    /* Verde más oscuro */
 }
 
 .orders-table {
@@ -381,7 +401,8 @@ body {
 .orders-table td {
     padding: 8px;
     border: 1px solid #ddd;
-    text-align: center; /* Centrar el contenido */
+    text-align: center;
+    /* Centrar el contenido */
 }
 
 .orders-table th {
@@ -401,7 +422,7 @@ body {
 }
 
 .logo-small {
-    top: 10px; 
+    top: 10px;
     left: 20px;
     position: absolute;
     height: 4rem;
@@ -410,17 +431,34 @@ body {
 }
 
 .swal2-confirm {
-    background-color: #4CAF50 !important; /* Verde */
-    border-color: #4CAF50 !important; /* Borde verde */
+    background-color: #4CAF50 !important;
+    /* Verde */
+    border-color: #4CAF50 !important;
+    /* Borde verde */
 }
 
 .swal2-cancel {
-    background-color: #999999 !important; 
+    background-color: #999999 !important;
     border-color: #999999 !important;
 }
 
 
 .swal2-deny {
-    background-color: #999999 !important; 
+    background-color: #999999 !important;
     border-color: #999999 !important;
+}
+
+#adminBtn {
+    background-color: gray; 
+    color: white; 
+  }
+  
+  #adminBtn:hover {
+    background-color: darkgray; 
+  }
+
+@media only screen and (max-width: 768px) {
+    .profile {
+        min-width: 21rem;
+    }
 }

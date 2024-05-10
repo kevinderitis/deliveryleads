@@ -13,7 +13,9 @@
 
 <body>
     <div class="logo__wrapper">
-        <img src="images/logovegasnew.png" alt="Logo" class="logo-small">
+        <a href="profile.html">
+            <img src="images/logovegasnew.png" alt="Logo" class="logo-small">
+        </a>
     </div>
     <button class="btn btn--primary logout-btn" onclick="logout()" style="position: absolute; top: 20px; right: 20px;">
         Log out
@@ -23,7 +25,9 @@
             <h1>Admin Panel</h1>
         </header>
         <div class="admin-buttons">
-            <!-- Botón para ordenes -->
+            <button class="admin-button btn btn--primary" onclick="window.location.href = 'profile.html';">
+                Perfil
+            </button>
             <button class="admin-button btn btn--primary" onclick="window.location.href = 'orders.html';">
                 Ordenes
             </button>
