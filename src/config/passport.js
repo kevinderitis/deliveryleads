@@ -1,10 +1,11 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { getClientByEmail, createNewClient } from '../dao/clientDAO.js';
+import config from './config.js';
 
 passport.use(new GoogleStrategy({
-  clientID: '67919584822-le7eavsn03i2tl1617g1tal3du6vb96n.apps.googleusercontent.com',
-  clientSecret: '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',
+  clientID: config.GOOGLE_CLIENT_ID,
+  clientSecret: config.GOOGLE_CLIENT_SECRET,
   callbackURL: "/auth/google/callback"
 },
   async function (accessToken, refreshToken, profile, done) {

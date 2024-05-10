@@ -222,3 +222,19 @@ body {
     gap: 0.5rem;
     justify-content: space-between;
 }
+
+.swal2-confirm {
+    background-color: #4CAF50 !important; /* Verde */
+    border-color: #4CAF50 !important; /* Borde verde */
+}
+
+.swal2-cancel {
+    background-color: #999999 !important; 
+    border-color: #999999 !important;
+}
+
+
+.swal2-deny {
+    background-color: #999999 !important; 
+    border-color: #999999 !important;
+}

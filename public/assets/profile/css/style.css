@@ -392,15 +392,35 @@ body {
     background-color: #f2f2f2;
 }
 
-.swal2-confirm {
-    background-color: #c9220c; 
-    color: white; 
-}
-
 .logout-btn {
     position: absolute;
     top: 20px;
     right: 20px;
     width: auto;
     padding: 8px 16px;
+}
+
+.logo-small {
+    top: 10px; 
+    left: 20px;
+    position: absolute;
+    height: 4rem;
+    width: 10rem;
+    overflow: hidden;
+}
+
+.swal2-confirm {
+    background-color: #4CAF50 !important; /* Verde */
+    border-color: #4CAF50 !important; /* Borde verde */
+}
+
+.swal2-cancel {
+    background-color: #999999 !important; 
+    border-color: #999999 !important;
+}
+
+
+.swal2-deny {
+    background-color: #999999 !important; 
+    border-color: #999999 !important;
 }

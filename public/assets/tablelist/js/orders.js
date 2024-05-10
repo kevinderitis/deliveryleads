@@ -34,7 +34,9 @@ const renderOrders = async () => {
         .map(order => {
             const status = order.delivered ? 'active' : 'inactive';
             const statusText = order.delivered ? 'Entregado' : 'Pendiente'
+            const orderDate = new Date(order.updatedAt).toLocaleDateString();
             return `<tr>
+                <td>${orderDate}</td>
                 <td class="order-profile">
                     <span class="profile-info">
                         <span class="profile-info__name">
@@ -72,14 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
 const logout = async () => {
     try {
         const response = await fetch(`${API_URL}/auth/logout`);
-        
+
         if (!response.ok) {
             throw new Error('Error al hacer logout');
         }
-        
+
         window.location.href = 'login.html';
     } catch (error) {
         console.error('Error al hacer logout:', error.message);
     }
-  };
-  
+};

@@ -63,8 +63,10 @@ const renderOrders = async () => {
         .slice(startIndex, endIndex)
         .map(order => {
             const status = order.delivered ? 'active' : 'inactive';
-            const statusText = order.delivered ? 'Entregado' : 'Pendiente'
+            const statusText = order.delivered ? 'Entregado' : 'Pendiente';
+            const orderDate = new Date(order.updatedAt).toLocaleDateString();
             return `<tr>
+                <td>${orderDate}</td>
                 <td class="order-profile">
                     <span class="profile-info">
                         <span class="profile-info__name">

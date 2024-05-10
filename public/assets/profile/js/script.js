@@ -50,6 +50,9 @@ function setOrdersAndLeads(ordenesActivas, leadsRecibidos) {
 
 function setWhatsAppNumber(number) {
   const whatsappLink = document.getElementById('whatsapp-number');
+  if (!number) {
+    emptyPhoneAlert();
+  }
   if (whatsappLink) {
     whatsappLink.href = `https://wa.me/${number}`;
     whatsappLink.textContent = number;
@@ -100,9 +103,9 @@ function setOrderTable(orders, draft) {
 function toggleAdminButton(showButton) {
   const adminBtn = document.getElementById('adminBtn');
   if (showButton) {
-      adminBtn.style.display = 'block';
+    adminBtn.style.display = 'block';
   } else {
-      adminBtn.style.display = 'none';
+    adminBtn.style.display = 'none';
   }
 }
 
@@ -119,17 +122,51 @@ const toggleClientState = (isStarted) => {
   const stopTd = document.getElementById('stop-td');
   console.log(`El valor es: ${isStarted}`)
   if (!isStarted) {
-      startButton.style.display = 'block';
-      stopButton.style.display = 'none';
-      startTd.style.display = 'table-cell';
-      stopTd.style.display = 'none';
+    startButton.style.display = 'block';
+    stopButton.style.display = 'none';
+    startTd.style.display = 'table-cell';
+    stopTd.style.display = 'none';
   } else {
-      startButton.style.display = 'none';
-      stopButton.style.display = 'block';
-      startTd.style.display = 'none';
-      stopTd.style.display = 'table-cell';
+    startButton.style.display = 'none';
+    stopButton.style.display = 'block';
+    startTd.style.display = 'none';
+    stopTd.style.display = 'table-cell';
   }
 };
+
+const emptyPhoneAlert = async () => {
+  Swal.fire({
+    title: "Número de telefono no configurado",
+    input: "text",
+    inputPlaceholder: "Ingrese su número de teléfono",
+    inputAttributes: {
+      autocapitalize: "off",
+      type: "number",
+      pattern: "[0-9]+"
+    },
+    showCancelButton: true,
+    confirmButtonText: "Configurar",
+    showLoaderOnConfirm: true,
+    preConfirm: async number => {
+      try {
+        let newNumber = await updatePhoneNumber(number);
+      } catch (error) {
+        Swal.showValidationMessage(`
+          Error al cambiar el numero: ${error}
+        `);
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const newNumber = result.value;
+      document.getElementById('whatsapp-number').textContent = newNumber;
+      Swal.fire({
+        title: `Número de telefono configurado correctamente ${newNumber}`
+      });
+    }
+  });
+}
 
 
 async function fetchDataFromServer() {
@@ -174,7 +211,6 @@ async function updatePhoneNumber(phone) {
   const formData = {
     phone
   };
-  console.log(url)
   try {
     const response = await fetch(url, {
       method: 'PUT',
@@ -252,18 +288,17 @@ async function editNumber() {
 
 const logout = async () => {
   try {
-      const response = await fetch(`${API_URL}/auth/logout`)
-      
-      if (!response.ok) {
-          throw new Error('Error al hacer logout');
-      }
-      
-      window.location.href = 'login.html';
+    const response = await fetch(`${API_URL}/auth/logout`)
+
+    if (!response.ok) {
+      throw new Error('Error al hacer logout');
+    }
+
+    window.location.href = 'login.html';
   } catch (error) {
-      console.error('Error al hacer logout:', error.message);
+    console.error('Error al hacer logout:', error.message);
   }
 };
 
-
-
 document.addEventListener('DOMContentLoaded', fetchDataFromServer);
+
