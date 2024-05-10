@@ -23,12 +23,12 @@ loginForm.addEventListener("submit", async (e) => {
       body: JSON.stringify(formData)
     });
 
-    let data = await response.json();
-
     if (response.ok) {
+      let data = await response.json();
       let redirect = data.admin ? 'admin.html' : 'profile.html';
       window.location.href = redirect;
     } else {
+      console.log('ERROR')
       Swal.fire({
         icon: "error",
         title: "Ups...",
