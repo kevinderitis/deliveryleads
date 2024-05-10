@@ -8,6 +8,7 @@ import draftOrderRouter from './src/routes/draftOrderRouter.js';
 import session from 'express-session';
 import passport from './src/config/passport.js';
 import cors from 'cors';
+import config from './src/config/config.js';
 
 const app = express();
 
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.use(session({
-    secret: 'cadenasegura',
+    secret: config.SECRET_PASSPORT,
     resave: false,
     saveUninitialized: false,
     cookie: {
