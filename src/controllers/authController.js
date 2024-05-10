@@ -45,14 +45,28 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        req.logout();
-        await new Promise((resolve, reject) => {
-            req.session.destroy((err) => {
-                if (err) reject(err);
-                else resolve();
+        const logoutPromise = () => {
+            return new Promise((resolve, reject) => {
+                req.logout((err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
             });
+        };
+
+        await logoutPromise();
+
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Error al destruir la sesión:', err);
+                res.status(500).send('Error al cerrar la sesión');
+            } else {
+                res.send({ result: 'Logout ok'});
+            }
         });
-        res.send({ result: 'Logout ok'})
     } catch (error) {
         console.error('Error al cerrar la sesión:', error);
         res.status(500).send('Error al cerrar la sesión');
