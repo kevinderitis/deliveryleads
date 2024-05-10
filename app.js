@@ -39,5 +39,5 @@ app.use('/payment', paymentRouter)
 app.use('/auth', authRouter)
 app.use('/draft', draftOrderRouter)
 
-const PORT = 8080;
+const PORT = config.PORT;
 const server = app.listen(PORT, () => console.log(`Server running on port: ${server.address().port}`))
