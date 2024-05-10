@@ -17,6 +17,10 @@ button:focus {
 	outline: none !important;
 }
 
+.button-login {
+	background-color: rgba(211, 211, 211, 0.199);
+}
+
 button::-moz-focus-inner {
 	border: 0;
 }
