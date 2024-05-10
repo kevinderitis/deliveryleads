@@ -11,7 +11,7 @@ if (typeParam === 'pre') {
 
 const logout = async () => {
   try {
-      const response = await fetch(`${API_URL}/auth/logout`);
+      const response = await fetch(`/auth/logout`);
       
       if (!response.ok) {
           throw new Error('Error al hacer logout');
@@ -36,11 +36,11 @@ form.addEventListener('submit', async (event) => {
     quantity
   };
   
-  let url = `${API_URL}/order`;
+  let url = `/order`;
   
   if (typeParam === 'pre') {
     formData = { quantity };
-    url = `${API_URL}/draft`;
+    url = `/draft`;
   };
 
   try {

@@ -1,6 +1,6 @@
 const logout = async () => {
     try {
-        const response = await fetch(`${API_URL}/auth/logout`);
+        const response = await fetch(`/auth/logout`);
         
         if (!response.ok) {
             throw new Error('Error al hacer logout');
@@ -59,7 +59,7 @@ const init = async () => {
     const page = urlParams.get('page') || 1;
 
     try {
-        const clients = await fetchData(`${API_URL}/client`);
+        const clients = await fetchData(`/client`);
         renderClients(clients);
         renderPagination(Math.ceil(clients.length / itemsOnPage), page);
     } catch (error) {

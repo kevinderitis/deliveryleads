@@ -1,6 +1,6 @@
 const fetchOrders = async () => {
     try {
-        const response = await fetch(`${API_URL}/order`);
+        const response = await fetch(`/order`);
         if (!response.ok) {
             if (response.statusText === "Unauthorized") {
                 window.location.href = 'login.html'
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const logout = async () => {
     try {
-        const response = await fetch(`${API_URL}/auth/logout`);
+        const response = await fetch(`/auth/logout`);
 
         if (!response.ok) {
             throw new Error('Error al hacer logout');

@@ -1,6 +1,6 @@
 const fetchOrders = async () => {
     try {
-        const response = await fetch(`${API_URL}/draft`);
+        const response = await fetch(`/draft`);
         if (!response.ok) {
             if (response.statusText === "Unauthorized") {
                 window.location.href = 'login.html'
@@ -18,7 +18,7 @@ const fetchOrders = async () => {
 
 async function approvePreOrder(orderId) {
     try {
-        const response = await fetch(`${API_URL}/draft/approve/${orderId}`, {
+        const response = await fetch(`/draft/approve/${orderId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const logout = async () => {
     try {
-        const response = await fetch(`${API_URL}/auth/logout`);
+        const response = await fetch(`/auth/logout`);
         
         if (!response.ok) {
             throw new Error('Error al hacer logout');

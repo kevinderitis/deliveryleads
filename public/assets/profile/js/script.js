@@ -171,7 +171,7 @@ const emptyPhoneAlert = async () => {
 
 async function fetchDataFromServer() {
   try {
-    const response = await fetch(`${API_URL}/client/data`);
+    const response = await fetch(`/client/data`);
 
     if (!response.ok) {
       if (response.statusText === "Unauthorized") {
@@ -208,7 +208,7 @@ async function fetchDataFromServer() {
 };
 
 async function updatePhoneNumber(phone) {
-  const url = `${API_URL}/client/phone`;
+  const url = `/client/phone`;
   const formData = {
     phone
   };
@@ -233,7 +233,7 @@ async function updatePhoneNumber(phone) {
 }
 
 async function changeClientState(state) {
-  const url = `${API_URL}/client/state`;
+  const url = `/client/state`;
   const formData = {
     state
   };
@@ -289,7 +289,7 @@ async function editNumber() {
 
 const logout = async () => {
   try {
-    const response = await fetch(`${API_URL}/auth/logout`)
+    const response = await fetch(`/auth/logout`)
 
     if (!response.ok) {
       throw new Error('Error al hacer logout');
