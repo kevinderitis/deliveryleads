@@ -32,14 +32,12 @@ async function approvePreOrder(orderId) {
         Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Se creo la orden correctamente",
+            title: "Se aprobó la orden correctamente",
             showConfirmButton: false,
             timer: 1500
+        }).then(() => {
+            window.location.href = 'orders.html';
         });
-        const data = await response.json();
-
-        window.location.href = 'pre-orders.html'
-        console.log('Respuesta del servidor:', data);
     } catch (error) {
         console.error('Error al realizar la acción:', error);
     }
