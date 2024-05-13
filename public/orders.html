@@ -18,6 +18,9 @@
         Log out
     </button>
     <div class="table-widget">
+        <button id="adminBtn" class="btn btn--primary"" onclick="redirectToAdmin()">
+            Panel de administrador
+        </button>
         <table>
             <caption>
                 Ordenes
@@ -28,16 +31,15 @@
                     <th>Email</th>
                     <th>Status</th>
                     <th>Cantidad</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="order-rows">
-                <!-- Rows will be generated dynamically -->
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="4">
                         <ul class="pagination">
-                            <!-- Pagination links will be generated dynamically -->
                         </ul>
                     </td>
                 </tr>

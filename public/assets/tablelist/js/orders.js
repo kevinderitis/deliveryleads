@@ -15,6 +15,11 @@ const fetchOrders = async () => {
     }
 };
 
+function redirectToAdmin() {
+    window.location.href = 'admin.html';
+  }
+  
+
 const renderOrders = async () => {
     const orders = await fetchOrders();
     console.log(orders)
@@ -33,8 +38,11 @@ const renderOrders = async () => {
         .slice(startIndex, endIndex)
         .map(order => {
             const status = order.delivered ? 'active' : 'inactive';
-            const statusText = order.delivered ? 'Entregado' : 'Pendiente'
+            let statusText = order.delivered ? 'Entregado' : 'Pendiente'
             const orderDate = new Date(order.updatedAt).toLocaleDateString();
+            if (order.delivered && order.quantity > 0) {
+                statusText = 'Pausado'
+            }
             return `<tr>
                 <td>${orderDate}</td>
                 <td class="order-profile">
@@ -50,6 +58,16 @@ const renderOrders = async () => {
                     </span>
                 </td>
                 <td>${order.quantity}</td>
+                <td></td>
+                ${statusText === 'Pausado' ? `                <td>                <button onclick="activateOrder('${order.orderId}')">
+                <img src="assets/order/play.svg" alt="Icono" width="24" height="24" style="background-color: transparent; border: none;">
+            </button></td>` : `                <td>                <button onclick="stopOrder('${order.orderId}')">
+            <img src="assets/order/stop.svg" alt="Icono" width="24" height="24" style="background-color: transparent; border: none;">
+        </button></td>`}
+
+            <td>                <button onclick="deleteOrder('${order.orderId}')">
+            <img src="assets/order/delete.svg" alt="Icono" width="24" height="24" style="background-color: transparent; border: none;">
+        </button></td>
             </tr>`;
         });
 
@@ -84,3 +102,86 @@ const logout = async () => {
         console.error('Error al hacer logout:', error.message);
     }
 };
+
+async function stopOrder(orderId) {
+    try {
+        const response = await fetch(`/order/stop/${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('No se pudo completar la acción');
+        }
+
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Se detuvo la orden correctamente",
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            window.location.href = 'orders.html';
+        });
+    } catch (error) {
+        console.error('Error al realizar la acción:', error);
+    }
+}
+
+async function activateOrder(orderId) {
+    try {
+        const response = await fetch(`/order/activate/${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('No se pudo completar la acción');
+        }
+
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Se activo la orden correctamente",
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            window.location.href = 'orders.html';
+        });
+    } catch (error) {
+        console.error('Error al realizar la acción:', error);
+    }
+}
+
+
+async function deleteOrder(orderId) {
+    try {
+        const response = await fetch(`/order/${orderId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('No se pudo completar la acción');
+        }
+
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Se elimino la orden correctamente",
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            window.location.href = 'orders.html';
+        });
+
+    } catch (error) {
+        console.error('Error al realizar la acción:', error);
+    }
+}

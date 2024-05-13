@@ -41,6 +41,11 @@ const renderClients = (clients) => {
     }).join('');
 };
 
+function redirectToAdmin() {
+    window.location.href = 'admin.html';
+  }
+  
+
 const renderPagination = (numberOfPages, start) => {
     const pagination = document.querySelector('.pagination');
     const linkList = [];

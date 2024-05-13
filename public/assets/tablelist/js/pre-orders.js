@@ -38,6 +38,7 @@ async function approvePreOrder(orderId) {
         });
         const data = await response.json();
 
+        window.location.href = 'pre-orders.html'
         console.log('Respuesta del servidor:', data);
     } catch (error) {
         console.error('Error al realizar la acción:', error);
@@ -101,6 +102,11 @@ const renderOrders = async () => {
 
     pagination.innerHTML = linkList.join('');
 };
+
+function redirectToAdmin() {
+    window.location.href = 'admin.html';
+  }
+  
 
 document.addEventListener('DOMContentLoaded', () => {
     renderOrders();

@@ -1,4 +1,4 @@
-import { getAllOrders, updateOrderById, createNewOrder, getOldestActiveOrder, updateOrderByOrderId, getOrdersByClientEmail, getActiveOrdersCountByClientEmail } from "../dao/orderDAO.js";
+import { getAllOrders, updateOrderById, createNewOrder, getOldestActiveOrder, updateOrderByOrderId, getOrdersByClientEmail, getActiveOrdersCountByClientEmail, deleteOrderById } from "../dao/orderDAO.js";
 import { getClientByEmailService } from './clientService.js';
 // import { createPaymentPreference } from "./mpService.js";
 
@@ -94,6 +94,16 @@ export const getOldestActiveOrderService = async () => {
     try {
         const oldestActiveOrder = await getOldestActiveOrder();
         return oldestActiveOrder;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+export const deleteOrderService = async (orderId) => {
+    try {
+        const response = await deleteOrderById(orderId);
+        return response;
     } catch (error) {
         console.log(error);
         throw error;

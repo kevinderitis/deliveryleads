@@ -195,6 +195,7 @@ async function fetchDataFromServer() {
     const admin = data.admin;
     const leads = data.totalLeads;
 
+    setNewOrderButton(admin);
     toggleAdminButton(admin);
     toggleClientState(clientState);
     insertName(nombre);
@@ -206,6 +207,19 @@ async function fetchDataFromServer() {
     console.error('Error al obtener datos del servidor:', error);
   }
 };
+
+async function setNewOrderButton(admin) {
+  const orderButton = document.getElementById('orderButton');
+  if (admin) {
+    orderButton.addEventListener('click', () => {
+      window.location.href = 'new-order.html';
+    });
+  } else {
+    orderButton.addEventListener('click', () => {
+      window.location.href = 'new-order.html?type=pre';
+    });
+  }
+}
 
 async function updatePhoneNumber(phone) {
   const url = `/client/phone`;

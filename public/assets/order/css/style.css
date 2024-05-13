@@ -448,3 +448,12 @@ input[type="number"] {
     background-color: #999999 !important; 
     border-color: #999999 !important;
 }
+
+#adminBtn {
+    background-color: gray; 
+    color: white; 
+  }
+  
+  #adminBtn:hover {
+    background-color: darkgray; 
+  }

@@ -140,7 +140,7 @@ const updateOrderByOrderId = async (orderId, newData) => {
 
 const deleteOrderById = async (orderId) => {
   try {
-    const deletedOrder = await Order.findByIdAndDelete(orderId);
+    const deletedOrder = await Order.findOneAndDelete({ orderId });
     if (!deletedOrder) {
       throw new Error('Orden no encontrada');
     }

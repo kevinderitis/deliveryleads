@@ -1,4 +1,4 @@
-import { createOrderService, getAllOrdersService, updateOrderByIdService } from "../services/orderService.js";
+import { createOrderService, getAllOrdersService, updateOrderByIdService, deleteOrderService, updateOrderByOrderIdService } from "../services/orderService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -32,6 +32,40 @@ export const updateOrder = async (req, res) => {
     }
 };
 
+export const stopOrder = async (req, res) => {
+    const orderId = req.params.id;
+    const newData = { delivered: true };
+
+    try {
+        const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Orden no encontrada' });
+        }
+
+        res.status(200).json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
+
+export const activateOrder = async (req, res) => {
+    const orderId = req.params.id;
+    const newData = { delivered: false };
+
+    try {
+        const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Orden no encontrada' });
+        }
+
+        res.status(200).json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
+
 export const createOrder = async (req, res) => {
     const { quantity, email } = req.body;
 
@@ -41,5 +75,17 @@ export const createOrder = async (req, res) => {
     } catch (error) {
         console.error('Error al crear la orden:', error);
         res.status(500).json({ error: 'Error interno al crear la orden' });
+    }
+};
+
+export const deleteOrder = async (req, res) => {
+    const orderId = req.params.id;
+
+    try {
+        let result = await deleteOrderService(orderId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error al eliminar la orden:', error);
+        res.status(500).json({ error: 'Error interno al eliminar la orden' });
     }
 };
