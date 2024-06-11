@@ -49,8 +49,8 @@ export const createLead = async (req, res) => {
 export const deliverLead = async (req, res) => {
     try {
         const result = await deliverLeadToClient();
-        let url = `https://api.whatsapp.com/send/?phone=${result}&text=Hola%21+quiero+mas+informaci%C3%B3n`;
-        res.status(200).json({ url });
+        // let url = `https://api.whatsapp.com/send/?phone=${result}&text=Hola%21+quiero+mas+informaci%C3%B3n`;
+        res.status(200).json({ phoneNumber: result });
     } catch (error) {
         console.error('Error al crear el lead:', error);
         res.status(500).json({ error: 'Error interno al crear el lead' });
