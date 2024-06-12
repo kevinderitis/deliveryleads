@@ -18,6 +18,29 @@ export const getAll = async (req, res) => {
     }
 };
 
+// export const getAll = async (req, res) => {
+//     try {
+//         const clients = await getAllClients();
+
+//         if (!clients || clients.length === 0) {
+//             return res.status(404).json({ message: 'No se encontraron clientes' });
+//         }
+
+//         const expandedClients = clients.reduce((expandedArray, client) => {
+//             client.phones.forEach(phone => {
+//                 expandedArray.push({ ...client.toObject(), phone });
+//             });
+//             return expandedArray;
+//         }, []);
+
+//         res.status(200).json(expandedClients);
+//     } catch (error) {
+//         console.error('Error al obtener todos los clientes:', error.message);
+//         res.status(500).json({ error: 'Error al obtener los clientes' });
+//     }
+// };
+
+
 export const getData = async (req, res) => {
     let email = req.user ? req.user.email : req.session.user.email;
     try {
@@ -72,6 +95,24 @@ export const updateClient = async (req, res) => {
 export const updatePhone = async (req, res) => {
     let email = req.user ? req.user.email : req.session.user.email;
     let phone = req.body.phone;
+
+    try {
+        const updatedClient = await updateClientPhoneByEmail(phone, email);
+
+        if (!updatedClient) {
+            return res.status(404).json({ message: 'No se pudo cambiar el telefono' });
+        }
+
+        res.status(200).json(updatedClient);
+    } catch (error) {
+        console.error('Error al actualizar cliente por ID:', error.message);
+        res.status(500).json({ error: 'Error al actualizar el cliente' });
+    }
+};
+
+export const updateUserPhone = async (req, res) => {
+    let email = req.body.email;
+    let phone = req.body.newPhone;
 
     try {
         const updatedClient = await updateClientPhoneByEmail(phone, email);

@@ -2,6 +2,7 @@
 let loginForm = document.querySelector(".my-form");
 let email = document.getElementById("email");
 let password = document.getElementById("password");
+let username = document.getElementById("name");
 let confirmPassword = document.getElementById("confirm-password");
 
 loginForm.addEventListener("submit", async (e) => {
@@ -9,10 +10,12 @@ loginForm.addEventListener("submit", async (e) => {
 
     console.log('Email:', email.value);
     console.log('Password:', password.value);
+    console.log('Nombre:', username.value);
 
     const formData = {
         email: email.value,
-        password: password.value
+        password: password.value,
+        name: username.value
     };
 
     try {

@@ -1,17 +1,17 @@
 const logout = async () => {
     try {
         const response = await fetch(`/auth/logout`);
-        
+
         if (!response.ok) {
             throw new Error('Error al hacer logout');
         }
-        
+
         window.location.href = 'login.html';
     } catch (error) {
         console.error('Error al hacer logout:', error.message);
     }
-  };
-  
+};
+
 
 const fetchData = async (url) => {
     try {
@@ -26,6 +26,67 @@ const fetchData = async (url) => {
     }
 };
 
+async function updatePhoneNumber(phone, newPhone, email) {
+    const url = `/client/user/phone`;
+    const formData = {
+        phone,
+        newPhone,
+        email
+    };
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Número de teléfono actualizado:', data);
+        } else {
+            throw new Error('Error al actualizar el número de teléfono');
+        }
+    } catch (error) {
+        console.error('Error al enviar la solicitud:', error.message);
+    }
+}
+
+async function editNumber(email, phone) {
+    Swal.fire({
+        title: 'Editar número',
+        html: `
+            <input id="swal-input1" class="swal2-input" placeholder="Ingresa nuevo numero">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: async () => {
+            const newNumber = Swal.getPopup().querySelector('#swal-input1').value;
+            if (!newNumber) {
+                Swal.showValidationMessage('Por favor ingresa un número de WhatsApp');
+            }
+            await updatePhoneNumber(phone, newNumber, email);
+            return newNumber;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: '¡Guardado!',
+                text: 'El número de WhatsApp ha sido actualizado',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                onClose: () => {
+                    window.location.reload(); 
+                }
+            });
+        }
+    });
+}
+
 const renderClients = (clients) => {
     const tableBody = document.getElementById('client-rows');
     tableBody.innerHTML = clients.map((client) => {
@@ -37,14 +98,23 @@ const renderClients = (clients) => {
             </td>
             <td>${client.email}</td>
             <td>${client.phone}</td>
+            <td><button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;"><i class="fas fa-pencil-alt"></i></button></td>
         </tr>`;
     }).join('');
+
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const email = this.getAttribute('data-email');
+            const phone = this.getAttribute('data-phone');
+            editNumber(email, phone);
+        });
+    });
 };
 
 function redirectToAdmin() {
     window.location.href = 'admin.html';
-  }
-  
+}
+
 
 const renderPagination = (numberOfPages, start) => {
     const pagination = document.querySelector('.pagination');
