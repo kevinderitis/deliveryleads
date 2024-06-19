@@ -1,3 +1,4 @@
+let clients = [];
 const logout = async () => {
     try {
         const response = await fetch(`/auth/logout`);
@@ -111,6 +112,18 @@ const renderClients = (clients) => {
     });
 };
 
+const filterClients = () => {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    console.log(clients);
+    const filteredClients = clients.filter(client => {
+        const clientName = client.name ? client.name.toLowerCase() : '';
+        const clientEmail = client.email ? client.email.toLowerCase() : '';
+        return clientName.includes(searchInput) || clientEmail.includes(searchInput);
+    });
+    renderClients(filteredClients);
+};
+
+
 function redirectToAdmin() {
     window.location.href = 'admin.html';
 }
@@ -134,7 +147,7 @@ const init = async () => {
     const page = urlParams.get('page') || 1;
 
     try {
-        const clients = await fetchData(`/client`);
+        clients = await fetchData(`/client`);
         renderClients(clients);
         renderPagination(Math.ceil(clients.length / itemsOnPage), page);
     } catch (error) {
