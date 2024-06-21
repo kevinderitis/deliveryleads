@@ -18,6 +18,9 @@ const clientSchema = new mongoose.Schema({
   state: {
     type: Boolean,
     default: true
+  },
+  tgchatid: {
+    type: String
   }
 });
 
