@@ -1,7 +1,7 @@
 import { getAllClients, updateClientById, createNewClient, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin } from "../dao/clientDAO.js";
 import { getClientOrders } from "../services/orderService.js";
 import { getClientDraftOrders } from "../services/draftOrderService.js";
-import { calculateTotalLeads } from "../services/clientService.js";
+import { calculateTotalLeads, setTelegramChatIdService } from "../services/clientService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -152,6 +152,21 @@ export const createClient = async (req, res) => {
     try {
         const newClient = await createNewClient(name, email, password, phone);
         res.status(200).json(newClient);
+    } catch (error) {
+        console.error('Error al crear el cliente:', error);
+        res.status(500).json({ error: 'Error interno al crear el cliente' });
+    }
+};
+
+export const setTelegramChatId = async (req, res) => {
+    const { userId, telegramChatId } = req.body;
+    try {
+        const client = await setTelegramChatIdService(userId, telegramChatId);
+        let response = {
+            clientId: client._id,
+            tgchatid: client.tgchatid
+        }
+        res.status(200).json(response);
     } catch (error) {
         console.error('Error al crear el cliente:', error);
         res.status(500).json({ error: 'Error interno al crear el cliente' });

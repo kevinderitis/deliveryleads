@@ -133,5 +133,4 @@ const isAdmin = async (email) => {
     }
 };
 
-
 export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin };

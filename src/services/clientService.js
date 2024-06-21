@@ -1,4 +1,4 @@
-import { getClientByEmail } from "../dao/clientDAO.js";
+import { getClientByEmail, updateClientById } from "../dao/clientDAO.js";
 
 export const getClientByEmailService = async email => {
     try {
@@ -20,4 +20,14 @@ export const calculateTotalLeads = orders => {
     });
 
     return totalQuantity;
+};
+
+export const setTelegramChatIdService = async (userId, telegramChatId) => {
+    try {
+        const response = await updateClientById(userId, { tgchatid: telegramChatId })
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 };
