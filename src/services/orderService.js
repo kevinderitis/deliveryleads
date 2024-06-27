@@ -28,7 +28,19 @@ export const createOrderService = async (quantity, email) => {
 export const getAllOrdersService = async () => {
     try {
         const response = await getAllOrders();
-        return response;
+        const formattedOrders = response.map(order => ({
+            _id: order._id,
+            orderId: order.orderId,
+            quantity: order.quantity,
+            email: order.email,
+            name: order.clientInfo ? order.clientInfo.name : null,
+            phone: order.clientInfo ? order.clientInfo.phone : null,
+            delivered: order.delivered,
+            createdAt: order.createdAt,
+            updatedAt: order.updatedAt
+        }));
+
+        return formattedOrders;
     } catch (error) {
         console.log(error);
         throw error;

@@ -2,14 +2,15 @@ import bcrypt from 'bcrypt';
 import { getClientByEmail, createNewClient, isAdmin } from '../dao/clientDAO.js';
 
 export const signup = async (req, res) => {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
     try {
         const existingUser = await getClientByEmail(req.body.email);
         if (existingUser) {
             return res.status(400).send('El correo electrónico ya está registrado');
         }
+        let pass = password ? password : 'default';
 
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedPassword = await bcrypt.hash(pass, 10);
 
         const newUser = await createNewClient(name, email, hashedPassword);
 

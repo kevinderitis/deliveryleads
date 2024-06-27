@@ -19,8 +19,8 @@
         Log out
     </button>
     <div class="table-widget">
-        <button id="adminBtn" class="btn btn--primary"" onclick="redirectToAdmin()">
-            Panel de administrador
+        <button id="adminBtn" class="btn btn--primary"" onclick="redirectToOrders()">
+            Ordenes
         </button>
         <input type="text" id="searchInput" placeholder="Buscar por nombre o email" oninput="filterClients()">
         <table>
@@ -29,6 +29,7 @@
             </caption>
             <thead>
                 <tr>
+                    <th>id</th>
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Telefono</th>
@@ -46,6 +47,9 @@
                 </tr>
             </tfoot>
         </table>
+        <button class="btn btn--primary" onclick="newClient()">
+            Nuevo cliente
+        </button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/constants.js"></script>

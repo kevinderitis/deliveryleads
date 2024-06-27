@@ -19,7 +19,8 @@ const createNewOrder = async (quantity, email, orderId) => {
 
 const getAllOrders = async () => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });;
+    // const orders = await Order.find().sort({ createdAt: -1 });;
+    const orders = await Order.findWithClientInfo();
     console.log('Órdenes encontradas:', orders);
     return orders;
   } catch (error) {

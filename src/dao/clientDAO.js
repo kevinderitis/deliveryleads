@@ -22,7 +22,7 @@ const createNewClient = async (name, email, password, phone) => {
 
 const getAllClients = async () => {
     try {
-        const clients = await Client.find();
+        const clients = await Client.find().sort({ _id: -1 });
         console.log('Clientes encontrados:', clients);
         return clients;
     } catch (error) {

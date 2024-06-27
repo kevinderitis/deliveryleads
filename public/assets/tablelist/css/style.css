@@ -278,3 +278,15 @@ body {
     border-radius: 4px;
     font-size: 16px;
 }
+
+.swal2-select {
+    width: 80%; /* Ancho completo del input y select */
+    padding: 10px; /* Relleno interior */
+    font-size: 14px; /* Tamaño de fuente */
+    border-radius: 5px; /* Borde redondeado */
+    border: 1px solid #ccc; /* Borde gris claro */
+  }
+
+  .swal2-select {
+    height: auto; /* Altura automática */
+  }

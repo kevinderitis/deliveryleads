@@ -15,8 +15,108 @@ const fetchOrders = async () => {
     }
 };
 
+const fetchClients = async () => {
+    try {
+        const response = await fetch('/client');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
+        throw new Error('Failed to fetch data');
+    }
+};
+
+const createOrder = async (email, quantity) => {
+    try {
+        const response = await fetch('/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, quantity })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Create order error:', error);
+        throw new Error('Failed to create order');
+    }
+};
+
+async function newOrder() {
+    try {
+      const clients = await fetchClients();
+  
+      const clientOptions = clients.map(client => ({
+        text: `${client.name} (${client.email})`,
+        value: client.email
+      }));
+  
+      const result = await Swal.fire({
+        title: 'Crear nueva orden',
+        html: `
+          <select id="swal-input-client" class="swal2-select" placeholder="Selecciona un cliente">
+            ${clientOptions.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
+          </select>
+          <input id="swal-input-quantity" class="swal2-input" type="number" placeholder="Ingresa la cantidad">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Crear',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: async () => {
+          const email = Swal.getPopup().querySelector('#swal-input-client').value;
+          const quantity = Swal.getPopup().querySelector('#swal-input-quantity').value;
+  
+          if (!email || !quantity) {
+            Swal.showValidationMessage('Por favor selecciona un cliente y ingresa la cantidad');
+            return false;
+          }
+  
+          try {
+            await createOrder(email, quantity);
+            return { email, quantity };
+          } catch (error) {
+            Swal.showValidationMessage(`Error al crear la orden: ${error.message}`);
+            return false;
+          }
+        }
+      });
+  
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '¡Guardado!',
+          text: 'La nueva orden ha sido creada',
+          icon: 'success',
+          timer: 1000,
+          timerProgressBar: true,
+          onClose: () => {
+            window.location.reload();
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error al mostrar el formulario de nueva orden:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo mostrar el formulario de nueva orden',
+      });
+    }
+  }
+
 function redirectToAdmin() {
     window.location.href = 'admin.html';
+  }
+
+  function redirectToClients() {
+    window.location.href = 'clients.html';
   }
   
 
@@ -48,7 +148,7 @@ const renderOrders = async () => {
                 <td class="order-profile">
                     <span class="profile-info">
                         <span class="profile-info__name">
-                            ${order.email}
+                            ${order.name}
                         </span>
                     </span>
                 </td>

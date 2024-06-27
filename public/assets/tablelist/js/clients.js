@@ -27,6 +27,27 @@ const fetchData = async (url) => {
     }
 };
 
+const createUser = async (name, email) => {
+    try {
+        const response = await fetch('/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Create user error:', error);
+        throw new Error('Failed to create user');
+    }
+};
+
 async function updatePhoneNumber(phone, newPhone, email) {
     const url = `/client/user/phone`;
     const formData = {
@@ -81,7 +102,51 @@ async function editNumber(email, phone) {
                 timer: 1000,
                 timerProgressBar: true,
                 onClose: () => {
-                    window.location.reload(); 
+                    window.location.reload();
+                }
+            });
+        }
+    });
+}
+
+async function newClient() {
+    Swal.fire({
+        title: 'Agregar nuevo cliente',
+        html: `
+        <input id="swal-input-name" class="swal2-input" placeholder="Ingresa nombre">
+        <input id="swal-input-email" class="swal2-input" placeholder="Ingresa email">
+      `,
+        showCancelButton: true,
+        confirmButtonText: 'Crear',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: async () => {
+            const name = Swal.getPopup().querySelector('#swal-input-name').value;
+            const email = Swal.getPopup().querySelector('#swal-input-email').value;
+
+            if (!name || !email) {
+                Swal.showValidationMessage('Por favor ingresa el nombre y el email');
+                return false;
+            }
+
+            try {
+                await createUser(name, email);
+                return { name, email};
+            } catch (error) {
+                Swal.showValidationMessage(`Error al crear el usuario: ${error.message}`);
+                return false;
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: '¡Guardado!',
+                text: 'El nuevo cliente ha sido creado',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                onClose: () => {
+                    window.location.reload();
                 }
             });
         }
@@ -92,6 +157,7 @@ const renderClients = (clients) => {
     const tableBody = document.getElementById('client-rows');
     tableBody.innerHTML = clients.map((client) => {
         return `<tr>
+        <td>${client._id}</td>
             <td class="client-profile">
                 <span class="profile-info">
                     <span class="profile-info__name">${client.name}</span>
@@ -126,6 +192,10 @@ const filterClients = () => {
 
 function redirectToAdmin() {
     window.location.href = 'admin.html';
+}
+
+function redirectToOrders() {
+    window.location.href = 'orders.html';
 }
 
 

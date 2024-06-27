@@ -25,7 +25,7 @@ loginForm.addEventListener("submit", async (e) => {
 
     if (response.ok) {
       let data = await response.json();
-      let redirect = data.admin ? 'admin.html' : 'profile.html';
+      let redirect = data.admin ? 'orders.html' : 'profile.html';
       window.location.href = redirect;
     } else {
       console.log('ERROR')
