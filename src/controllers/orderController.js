@@ -1,4 +1,4 @@
-import { createOrderService, getAllOrdersService, updateOrderByIdService, deleteOrderService, updateOrderByOrderIdService, getOrderIdByTelegram } from "../services/orderService.js";
+import { createOrderService, getAllOrdersService, updateOrderByIdService, deleteOrderService, updateOrderByOrderIdService, getOrderIdByTelegramService } from "../services/orderService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -54,7 +54,7 @@ export const stopOrderByTelegram = async (req, res) => {
     const newData = { delivered: true };
 
     try {
-        const orderId = await getOrderIdByTelegram(tgChatId);
+        const orderId = await getOrderIdByTelegramService(tgChatId);
         const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
 
         if (!updatedOrder) {
@@ -72,7 +72,7 @@ export const activateOrderByTelegram = async (req, res) => {
     const newData = { delivered: false };
 
     try {
-        const orderId = await getOrderIdByTelegram(tgChatId);
+        const orderId = await getOrderIdByTelegramService(tgChatId);
         const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
 
         if (!updatedOrder) {

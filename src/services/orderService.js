@@ -1,4 +1,4 @@
-import { getAllOrders, updateOrderById, createNewOrder, getOldestActiveOrder, updateOrderByOrderId, getOrdersByClientEmail, getActiveOrdersCountByClientEmail, deleteOrderById, getOrderIdByTelegram } from "../dao/orderDAO.js";
+import { getAllOrders, updateOrderById, createNewOrder, getOldestActiveOrder, updateOrderByOrderId, getOrdersByClientEmail, getActiveOrdersCountByClientEmail, deleteOrderById } from "../dao/orderDAO.js";
 import { getClientByEmailService, getClientByTelegramService } from './clientService.js';
 // import { createPaymentPreference } from "./mpService.js";
 
@@ -101,9 +101,9 @@ export const getOrderId = async (orderId) => {
     }
 };
 
-export const getOrderIdByTelegram = async (tgChatId) => {
+export const getOrderIdByTelegramService = async (tgChatId) => {
     try {
-        const client = await getClientByTelegramService(tgChatId);
+        const client = await getClientByTelegram(tgChatId);
         const order = await getOrdersByClientEmail(client.email);
         return order._id;
     } catch (error) {
