@@ -103,12 +103,18 @@ export const getOrderId = async (orderId) => {
 
 export const getOrderIdByTelegramService = async (tgChatId) => {
     let orderId;
+    let order;
     try {
-        const client = await getClientByTelegram(tgChatId);
-        const order = await getOrdersByClientEmail(client.email);
-        if (order){
+        const client = await getClientByTelegramService(tgChatId);
+
+        if (client) {
+            order = await getOrdersByClientEmail(client.email);
+        }
+
+        if (order) {
             orderId = order._id;
         }
+        
         return orderId
     } catch (error) {
         console.log(error);
