@@ -4,15 +4,15 @@ import { isAuthenticated, isAdmin } from '../middleware/middleware.js';
 
 const orderRouter = Router();
 
-orderRouter.use(isAuthenticated)
+// orderRouter.use(isAuthenticated)
 
-orderRouter.get('/', getAll);
+orderRouter.get('/', isAuthenticated, getAll);
 orderRouter.post('/', isAdmin, createOrder)
-orderRouter.put('/:id', updateOrder);
-orderRouter.put('/stop/:id', stopOrder);
+orderRouter.put('/:id', isAuthenticated, isAuthenticated, updateOrder);
+orderRouter.put('/stop/:id', isAuthenticated, stopOrder);
 orderRouter.put('/user/stop', stopOrderByTelegram);
 orderRouter.put('/user/start', activateOrderByTelegram);
-orderRouter.put('/activate/:id', activateOrder);
-orderRouter.delete('/:id', deleteOrder);
+orderRouter.put('/activate/:id', isAuthenticated, activateOrder);
+orderRouter.delete('/:id', isAuthenticated, deleteOrder);
 
 export default orderRouter;
