@@ -10,8 +10,8 @@ orderRouter.get('/', isAuthenticated, getAll);
 orderRouter.post('/', isAdmin, createOrder)
 orderRouter.put('/:id', isAuthenticated, isAuthenticated, updateOrder);
 orderRouter.put('/stop/:id', isAuthenticated, stopOrder);
-orderRouter.put('/user/stop', stopOrderByTelegram);
-orderRouter.put('/user/start', activateOrderByTelegram);
+orderRouter.post('/user/stop', stopOrderByTelegram);
+orderRouter.post('/user/start', activateOrderByTelegram);
 orderRouter.put('/activate/:id', isAuthenticated, activateOrder);
 orderRouter.delete('/:id', isAuthenticated, deleteOrder);
 
