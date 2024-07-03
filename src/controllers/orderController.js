@@ -73,10 +73,12 @@ export const activateOrderByTelegram = async (req, res) => {
 
     try {
         const orderId = await getOrderIdByTelegramService(tgChatId);
-        const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
+        let updatedOrder;
 
-        if (!updatedOrder) {
+        if (!orderId) {
             return res.status(404).json({ message: 'Orden no encontrada' });
+        } else {
+            updatedOrder = await updateOrderByOrderIdService(orderId, newData);
         }
 
         res.status(200).json(updatedOrder);
@@ -106,7 +108,7 @@ export const createOrder = async (req, res) => {
     const { quantity, email } = req.body;
 
     try {
-        const preference = await createOrderService( quantity, email);
+        const preference = await createOrderService(quantity, email);
         res.status(200).json({ preference });
     } catch (error) {
         console.error('Error al crear la orden:', error);
