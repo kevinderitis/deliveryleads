@@ -10,7 +10,7 @@ clientRouter.post('/', createClient);
 clientRouter.put('/:id/data', updateClient);
 clientRouter.put('/phone', isAuthenticated, updatePhone);
 clientRouter.put('/message/:email', isAuthenticated, updateWelcomeMessage);
-clientRouter.put('/user/phone', isAdmin, updateUserPhone);
+clientRouter.post('/user/phone', updateUserPhone);
 clientRouter.put('/state', isAuthenticated, updateClientState);
 clientRouter.post('/telegram', setTelegramChatId);
 
