@@ -131,7 +131,7 @@ async function newClient() {
 
             try {
                 await createUser(name, email);
-                return { name, email};
+                return { name, email };
             } catch (error) {
                 Swal.showValidationMessage(`Error al crear el usuario: ${error.message}`);
                 return false;
@@ -156,16 +156,24 @@ async function newClient() {
 const renderClients = (clients) => {
     const tableBody = document.getElementById('client-rows');
     tableBody.innerHTML = clients.map((client) => {
-        return `<tr>
-        <td>${client._id}</td>
-            <td class="client-profile">
-                <span class="profile-info">
-                    <span class="profile-info__name">${client.name}</span>
-                </span>
-            </td>
-            <td>${client.email}</td>
-            <td>${client.phone}</td>
-            <td><button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;"><i class="fas fa-pencil-alt"></i></button></td>
+        return `
+        <tr>
+          <td>${client._id}</td>
+          <td class="client-profile">
+            <span class="profile-info">
+              <span class="profile-info__name">${client.name}</span>
+            </span>
+          </td>
+          <td>${client.email}</td>
+          <td>${client.phone}</td>
+          <td>
+            <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button class="edit-welcome-message-btn" data-email="${client.email}" style="background-color: transparent;">
+              Editar Mensaje
+            </button>
+          </td>
         </tr>`;
     }).join('');
 
@@ -176,6 +184,75 @@ const renderClients = (clients) => {
             editNumber(email, phone);
         });
     });
+
+    document.querySelectorAll('.edit-welcome-message-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const email = this.getAttribute('data-email');
+            const client = clients.find(client => client.email === email);
+            editWelcomeMessage(client);
+        });
+    });
+};
+
+const editWelcomeMessage = async (client) => {
+    try {
+        const result = await Swal.fire({
+            title: 'Editar Mensaje de Bienvenida',
+            html: `
+          <textarea id="swal-input-welcome-message" class="swal2-textarea" style="height: 150px;" placeholder="Mensaje de bienvenida">${client.textmessage || ''}</textarea>
+        `,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar',
+            cancelButtonText: 'Cancelar',
+            focusConfirm: false,
+            preConfirm: async () => {
+                const newMessage = Swal.getPopup().querySelector('#swal-input-welcome-message').value;
+                console.log(client.email);
+                console.log(newMessage);
+                await updateWelcomeMessage(client.email, newMessage);
+                return newMessage;
+            }
+        });
+
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: '¡Guardado!',
+                text: 'El mensaje de bienvenida ha sido actualizado',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                onClose: () => {
+                    window.location.reload();
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error al editar mensaje de bienvenida:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo editar el mensaje de bienvenida',
+        });
+    }
+};
+
+const updateWelcomeMessage = async (email, newMessage) => {
+    try {
+        const response = await fetch(`/client/message/${email}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ welcomeMessage: newMessage })
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        console.log(`Actualizando mensaje de bienvenida para ${email} con:`, newMessage);
+    } catch (error) {
+        console.error('Error al actualizar mensaje de bienvenida en el backend:', error);
+        throw new Error('Failed to update welcome message');
+    }
 };
 
 const filterClients = () => {

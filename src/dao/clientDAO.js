@@ -12,7 +12,6 @@ const createNewClient = async (name, email, password, phone) => {
             phone
         });
         await newClient.save();
-        console.log('Cliente creado exitosamente:', newClient);
         return newClient;
     } catch (error) {
         console.error('Error al crear el cliente:', error.message);
@@ -23,7 +22,6 @@ const createNewClient = async (name, email, password, phone) => {
 const getAllClients = async () => {
     try {
         const clients = await Client.find().sort({ _id: -1 });
-        console.log('Clientes encontrados:', clients);
         return clients;
     } catch (error) {
         console.error('Error al obtener clientes:', error.message);
@@ -37,7 +35,6 @@ const getClientById = async (clientId) => {
         if (!client) {
             throw new Error('Cliente no encontrado');
         }
-        console.log('Cliente encontrado:', client);
         return client;
     } catch (error) {
         console.error('Error al obtener cliente por ID:', error.message);
@@ -53,7 +50,6 @@ const updateClientById = async (clientId, newData) => {
         if (!updatedClient) {
             throw new Error('Cliente no encontrado');
         }
-        console.log('Cliente actualizado:', updatedClient);
         return updatedClient;
     } catch (error) {
         console.error('Error al actualizar cliente por ID:', error.message);
@@ -69,8 +65,21 @@ const updateClientPhoneByEmail = async (phone, email) => {
         if (!updatedClient) {
             throw new Error('Cliente no encontrado');
         }
-        console.log('Cliente actualizado:', updatedClient);
         return updatedClient;
+    } catch (error) {
+        console.error('Error al actualizar cliente por ID:', error.message);
+        throw new Error('No se pudo actualizar el cliente');
+    }
+};
+
+const updateWelcomeMessage = async (email, welcomeMessage) => {
+    try {
+        const updatedClient = await Client.findOneAndUpdate(
+            { email: email },
+            { textmessage: welcomeMessage },
+            { new: true }
+        );
+            return updatedClient;
     } catch (error) {
         console.error('Error al actualizar cliente por ID:', error.message);
         throw new Error('No se pudo actualizar el cliente');
@@ -85,7 +94,6 @@ const updateClientStateByEmail = async (state, email) => {
         if (!updatedClient) {
             throw new Error('Cliente no encontrado');
         }
-        console.log('Cliente actualizado:', updatedClient);
         return updatedClient;
     } catch (error) {
         console.error('Error al actualizar cliente por ID:', error.message);
@@ -99,7 +107,6 @@ const deleteClientById = async (clientId) => {
         if (!deletedClient) {
             throw new Error('Cliente no encontrado');
         }
-        console.log('Cliente eliminado:', deletedClient);
         return deletedClient;
     } catch (error) {
         console.error('Error al eliminar cliente por ID:', error.message);
@@ -123,9 +130,6 @@ const getClientByEmail = async (email) => {
 const isAdmin = async (email) => {
     try {
         const client = await getUserByEmail(email);
-        if (!client) {
-            console.log('Cliente no encontrado')
-        }
         return client ? true : false;
     } catch (error) {
         console.error('Error al obtener cliente por correo electrónico:', error.message);
@@ -133,4 +137,4 @@ const isAdmin = async (email) => {
     }
 };
 
-export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin };
+export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin, updateWelcomeMessage };

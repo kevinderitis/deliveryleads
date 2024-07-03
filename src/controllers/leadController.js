@@ -49,7 +49,14 @@ export const createLead = async (req, res) => {
 export const deliverLead = async (req, res) => {
     try {
         const result = await deliverLeadToClient();
-        res.status(200).json({ phoneNumber: result.phone, telegram: result.tgchatid });
+        
+        const response = {
+            phoneNumber: result.phone,
+            telegram: result.tgchatid ? result.tgchatid : '',
+            welcomeMessage: result.textmessage ? result.textmessage : ''
+        }
+
+        res.status(200).json(response);
     } catch (error) {
         console.error('Error al crear el lead:', error);
         res.status(500).json({ error: 'Error interno al crear el lead' });

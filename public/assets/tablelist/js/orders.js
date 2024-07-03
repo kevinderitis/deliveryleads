@@ -51,74 +51,74 @@ const createOrder = async (email, quantity) => {
 
 async function newOrder() {
     try {
-      const clients = await fetchClients();
-  
-      const clientOptions = clients.map(client => ({
-        text: `${client.name} (${client.email})`,
-        value: client.email
-      }));
-  
-      const result = await Swal.fire({
-        title: 'Crear nueva orden',
-        html: `
+        const clients = await fetchClients();
+
+        const clientOptions = clients.map(client => ({
+            text: `${client.name} (${client.email})`,
+            value: client.email
+        }));
+
+        const result = await Swal.fire({
+            title: 'Crear nueva orden',
+            html: `
           <select id="swal-input-client" class="swal2-select" placeholder="Selecciona un cliente">
             ${clientOptions.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
           </select>
           <input id="swal-input-quantity" class="swal2-input" type="number" placeholder="Ingresa la cantidad">
         `,
-        showCancelButton: true,
-        confirmButtonText: 'Crear',
-        cancelButtonText: 'Cancelar',
-        focusConfirm: false,
-        preConfirm: async () => {
-          const email = Swal.getPopup().querySelector('#swal-input-client').value;
-          const quantity = Swal.getPopup().querySelector('#swal-input-quantity').value;
-  
-          if (!email || !quantity) {
-            Swal.showValidationMessage('Por favor selecciona un cliente y ingresa la cantidad');
-            return false;
-          }
-  
-          try {
-            await createOrder(email, quantity);
-            return { email, quantity };
-          } catch (error) {
-            Swal.showValidationMessage(`Error al crear la orden: ${error.message}`);
-            return false;
-          }
-        }
-      });
-  
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: '¡Guardado!',
-          text: 'La nueva orden ha sido creada',
-          icon: 'success',
-          timer: 1000,
-          timerProgressBar: true,
-          onClose: () => {
-            window.location.reload();
-          }
+            showCancelButton: true,
+            confirmButtonText: 'Crear',
+            cancelButtonText: 'Cancelar',
+            focusConfirm: false,
+            preConfirm: async () => {
+                const email = Swal.getPopup().querySelector('#swal-input-client').value;
+                const quantity = Swal.getPopup().querySelector('#swal-input-quantity').value;
+
+                if (!email || !quantity) {
+                    Swal.showValidationMessage('Por favor selecciona un cliente y ingresa la cantidad');
+                    return false;
+                }
+
+                try {
+                    await createOrder(email, quantity);
+                    return { email, quantity };
+                } catch (error) {
+                    Swal.showValidationMessage(`Error al crear la orden: ${error.message}`);
+                    return false;
+                }
+            }
         });
-      }
+
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: '¡Guardado!',
+                text: 'La nueva orden ha sido creada',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                onClose: () => {
+                    window.location.reload();
+                }
+            });
+        }
     } catch (error) {
-      console.error('Error al mostrar el formulario de nueva orden:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se pudo mostrar el formulario de nueva orden',
-      });
+        console.error('Error al mostrar el formulario de nueva orden:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo mostrar el formulario de nueva orden',
+        });
     }
-  }
+}
 
 function redirectToAdmin() {
     window.location.href = 'admin.html';
-  }
+}
 
-  function redirectToClients() {
+function redirectToClients() {
     window.location.href = 'clients.html';
-  }
-  
+}
+
 
 const renderOrders = async () => {
     const orders = await fetchOrders();
@@ -183,6 +183,12 @@ const renderOrders = async () => {
     }
 
     pagination.innerHTML = linkList.join('');
+
+    const totalAmount = orders
+        .filter(order => !order.delivered)
+        .reduce((total, order) => total + order.quantity, 0);
+
+    document.getElementById('total-amount').textContent = totalAmount;
 };
 
 document.addEventListener('DOMContentLoaded', () => {

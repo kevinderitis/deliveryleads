@@ -1,7 +1,7 @@
 import { getAllClients, updateClientById, createNewClient, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin } from "../dao/clientDAO.js";
 import { getClientOrders } from "../services/orderService.js";
 import { getClientDraftOrders } from "../services/draftOrderService.js";
-import { calculateTotalLeads, setTelegramChatIdService } from "../services/clientService.js";
+import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService } from "../services/clientService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -172,3 +172,16 @@ export const setTelegramChatId = async (req, res) => {
         res.status(500).json({ error: 'Error interno al crear el cliente' });
     }
 };
+
+export const updateWelcomeMessage = async (req, res) => {
+    const { email } = req.params;
+    const { welcomeMessage } = req.body;
+
+    try {
+        const updatedClient = await updateWelcomeMessageService(email, welcomeMessage);
+        res.status(200).json(updatedClient);
+    } catch (error) {
+        console.error('Error al actualizar mensaje de bienvenida:', error);
+        res.status(500).json({ message: 'Error al actualizar mensaje de bienvenida' });
+    }
+}
