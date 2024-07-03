@@ -1,4 +1,4 @@
-import { createOrderService, getAllOrdersService, updateOrderByIdService, deleteOrderService, updateOrderByOrderIdService } from "../services/orderService.js";
+import { createOrderService, getAllOrdersService, updateOrderByIdService, deleteOrderService, updateOrderByOrderIdService, getOrderIdByTelegram } from "../services/orderService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -37,6 +37,42 @@ export const stopOrder = async (req, res) => {
     const newData = { delivered: true };
 
     try {
+        const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Orden no encontrada' });
+        }
+
+        res.status(200).json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
+
+export const stopOrderByTelegram = async (req, res) => {
+    const tgChatId = req.body.tgchatid;
+    const newData = { delivered: true };
+
+    try {
+        const orderId = await getOrderIdByTelegram(tgChatId);
+        const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Orden no encontrada' });
+        }
+
+        res.status(200).json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
+
+export const activateOrderByTelegram = async (req, res) => {
+    const tgChatId = req.body.tgchatid;
+    const newData = { delivered: false };
+
+    try {
+        const orderId = await getOrderIdByTelegram(tgChatId);
         const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
 
         if (!updatedOrder) {

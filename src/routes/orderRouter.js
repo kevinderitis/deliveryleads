@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAll, createOrder, updateOrder, stopOrder, deleteOrder, activateOrder } from '../controllers/orderController.js';
+import { getAll, createOrder, updateOrder, stopOrder, stopOrderByTelegram, deleteOrder, activateOrder, activateOrderByTelegram } from '../controllers/orderController.js';
 import { isAuthenticated, isAdmin } from '../middleware/middleware.js';
 
 const orderRouter = Router();
@@ -10,6 +10,8 @@ orderRouter.get('/', getAll);
 orderRouter.post('/', isAdmin, createOrder)
 orderRouter.put('/:id', updateOrder);
 orderRouter.put('/stop/:id', stopOrder);
+orderRouter.put('/user/stop', stopOrderByTelegram);
+orderRouter.put('/user/start', activateOrderByTelegram);
 orderRouter.put('/activate/:id', activateOrder);
 orderRouter.delete('/:id', deleteOrder);
 
