@@ -1,4 +1,5 @@
 import { getClientByEmail, updateClientById, updateWelcomeMessage, getClientByTelegram } from "../dao/clientDAO.js";
+import { getAdminPhones } from "../dao/userDAO.js";
 
 export const getClientByEmailService = async email => {
     try {
@@ -45,6 +46,16 @@ export const setTelegramChatIdService = async (userId, telegramChatId) => {
 export const updateWelcomeMessageService = async (email, welcomeMessage) => {
     try {
         const response = await updateWelcomeMessage(email, welcomeMessage);
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+export const getAdminPhonesService = async (email, welcomeMessage) => {
+    try {
+        const response = await getAdminPhones();
         return response;
     } catch (error) {
         console.log(error);

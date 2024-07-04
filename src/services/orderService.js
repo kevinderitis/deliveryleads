@@ -122,6 +122,16 @@ export const getOrderIdByTelegramService = async (tgChatId, delivered) => {
     }
 };
 
+export const getLastOrderByClientEmailService = async email => {
+    try {
+        const order = await getLastOrderByClientEmail(email);     
+        return order;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
 export const getOldestActiveOrderService = async () => {
     try {
         const oldestActiveOrder = await getOldestActiveOrder();

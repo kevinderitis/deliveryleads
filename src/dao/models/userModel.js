@@ -8,6 +8,18 @@ const userSchema = new mongoose.Schema({
   },
   rol: {
     type: String
+  },
+  phone1: {
+    type: String
+  },
+  phone2: {
+    type: String
+  },
+  phone3: {
+    type: String
+  },
+  phone4: {
+    type: String
   }
 });
 

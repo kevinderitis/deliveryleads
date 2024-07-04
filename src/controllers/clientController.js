@@ -1,7 +1,7 @@
 import { getAllClients, updateClientById, createNewClient, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, updateClientPhoneByTelegramId, isAdmin } from "../dao/clientDAO.js";
-import { getClientOrders } from "../services/orderService.js";
+import { getClientOrders, getLastOrderByClientEmailService } from "../services/orderService.js";
 import { getClientDraftOrders } from "../services/draftOrderService.js";
-import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService } from "../services/clientService.js";
+import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService, getClientByTelegramService, getAdminPhonesService } from "../services/clientService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -12,6 +12,21 @@ export const getAll = async (req, res) => {
         }
 
         res.status(200).json(clients);
+    } catch (error) {
+        console.error('Error al obtener todos los clientes:', error.message);
+        res.status(500).json({ error: 'Error al obtener los clientes' });
+    }
+};
+
+export const getAdminPhones = async (req, res) => {
+    try {
+        const phones = await getAdminPhonesService();
+
+        if (!phones) {
+            return res.status(404).json({ message: 'No se encontraron telefonos' });
+        }
+
+        res.status(200).json(phones);
     } catch (error) {
         console.error('Error al obtener todos los clientes:', error.message);
         res.status(500).json({ error: 'Error al obtener los clientes' });
@@ -188,5 +203,22 @@ export const updateWelcomeMessage = async (req, res) => {
     } catch (error) {
         console.error('Error al actualizar mensaje de bienvenida:', error);
         res.status(500).json({ message: 'Error al actualizar mensaje de bienvenida' });
+    }
+}
+
+export const getClientByTgId = async (req, res) => {
+    const { tgchatid } = req.params;
+    
+    try {
+        let client = await getClientByTelegramService(tgchatid);
+        let order = await getLastOrderByClientEmailService(client.email);
+        let data = {
+            phoneNumber: client.phone,
+            remainingLeads: order.quantity
+        };
+        res.status(200).json(data);
+    } catch (error) {
+        console.error('Error al actualizar mensaje de bienvenida:', error);
+        res.status(500).json({ message: 'Error al obtener info de usuario' });
     }
 }
