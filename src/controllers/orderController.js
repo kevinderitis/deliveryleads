@@ -54,7 +54,7 @@ export const stopOrderByTelegram = async (req, res) => {
     const newData = { delivered: true };
 
     try {
-        const orderId = await getOrderIdByTelegramService(tgChatId);
+        const orderId = await getOrderIdByTelegramService(tgChatId, !newData.delivered);
         const updatedOrder = await updateOrderByOrderIdService(orderId, newData);
 
         if (!updatedOrder) {
@@ -72,7 +72,7 @@ export const activateOrderByTelegram = async (req, res) => {
     const newData = { delivered: false };
 
     try {
-        const orderId = await getOrderIdByTelegramService(tgChatId);
+        const orderId = await getOrderIdByTelegramService(tgChatId, !newData.delivered);
         let updatedOrder;
 
         if (!orderId) {

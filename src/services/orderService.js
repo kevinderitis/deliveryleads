@@ -101,14 +101,14 @@ export const getOrderId = async (orderId) => {
     }
 };
 
-export const getOrderIdByTelegramService = async (tgChatId) => {
+export const getOrderIdByTelegramService = async (tgChatId, delivered) => {
     let orderId;
     let order;
     try {
         const client = await getClientByTelegramService(tgChatId);
 
         if (client) {
-            order = await getLastOrderByClientEmail(client.email);
+            order = await getLastOrderByClientEmail(client.email, delivered);
         }
 
         if (order) {

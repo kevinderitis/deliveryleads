@@ -54,9 +54,9 @@ const getOrdersByClientEmail = async email => {
   }
 };
 
-const getLastOrderByClientEmail = async email => {
+const getLastOrderByClientEmail = async (email, delivered) => {
   try {
-    const order = await Order.findOne({ email, delivered: false }).sort({ createdAt: -1 });
+    const order = await Order.findOne({ email, delivered }).sort({ createdAt: -1 });
 
     return order;
   } catch (error) {
