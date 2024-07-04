@@ -54,6 +54,17 @@ const getOrdersByClientEmail = async email => {
   }
 };
 
+const getLastOrderByClientEmail = async email => {
+  try {
+    const order = await Order.findOne({ email, delivered: false }).sort({ createdAt: -1 });
+
+    return order;
+  } catch (error) {
+    console.error('Error al obtener órdenes por email:', error.message);
+    throw new Error('No se pudieron encontrar órdenes activas para este cliente');
+  }
+};
+
 const getActiveOrdersCountByClientEmail = async email => {
   try {
     const activeOrdersCount = await Order.countDocuments({ email, delivered: false });
@@ -153,4 +164,4 @@ const deleteOrderById = async (orderId) => {
   }
 };
 
-export { createNewOrder, getAllOrders, getOrderById, updateOrderById, deleteOrderById, getOldestActiveOrder, updateOrderByOrderId, getOrdersByClientEmail, getActiveOrdersCountByClientEmail };
+export { createNewOrder, getAllOrders, getOrderById, updateOrderById, deleteOrderById, getOldestActiveOrder, updateOrderByOrderId, getOrdersByClientEmail, getActiveOrdersCountByClientEmail, getLastOrderByClientEmail };
