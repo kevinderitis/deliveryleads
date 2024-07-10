@@ -53,7 +53,9 @@ export const deliverLead = async (req, res) => {
         const response = {
             phoneNumber: result.phone,
             telegram: result.tgchatid ? result.tgchatid : '',
-            welcomeMessage: result.textmessage ? result.textmessage : ''
+            welcomeMessage: result.textmessage ? result.textmessage : '',
+            nickname: result.nickname ? result.nickname : '',
+            sheet: result.sheet ? result.sheet : '',
         }
 
         res.status(200).json(response);

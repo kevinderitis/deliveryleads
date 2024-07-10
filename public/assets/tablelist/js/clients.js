@@ -75,6 +75,32 @@ async function updatePhoneNumber(phone, newPhone, email) {
     }
 }
 
+async function updateNickname(newNickname, email) {
+    const url = `/client/user/nickname`;
+    const formData = {
+        newNickname,
+        email
+    };
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Nombre de cajero actualizado:', data);
+        } else {
+            throw new Error('Error al actualizar el nombre de cajero');
+        }
+    } catch (error) {
+        console.error('Error al enviar la solicitud:', error.message);
+    }
+}
+
 async function editNumber(email, phone) {
     Swal.fire({
         title: 'Editar número',
@@ -98,6 +124,41 @@ async function editNumber(email, phone) {
             Swal.fire({
                 title: '¡Guardado!',
                 text: 'El número de WhatsApp ha sido actualizado',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                onClose: () => {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+}
+
+async function editNickname(email) {
+    Swal.fire({
+        title: 'Editar nombre de cajero',
+        html: `
+            <input id="swal-input1" class="swal2-input" placeholder="Ingresa nuevo nombre">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: async () => {
+            const newNickname = Swal.getPopup().querySelector('#swal-input1').value;
+            if (!newNickname) {
+                Swal.showValidationMessage('Por favor ingresa un nuevo nombre');
+            }
+            console.log(newNickname)
+            // await updateNickname(newNickname, email);
+            return newNickname;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: '¡Guardado!',
+                text: 'El nombre del cajero fue actualizado',
                 icon: 'success',
                 timer: 1000,
                 timerProgressBar: true,
@@ -164,6 +225,11 @@ const renderClients = (clients) => {
               <span class="profile-info__name">${client.name}</span>
             </span>
           </td>
+          <td>${client.nickname}
+          <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
+          <i class="fas fa-pencil-alt"></i>
+          </button>
+          </td>
           <td>${client.email}</td>
           <td>${client.phone}</td>
           <td>
@@ -190,6 +256,13 @@ const renderClients = (clients) => {
             const email = this.getAttribute('data-email');
             const client = clients.find(client => client.email === email);
             editWelcomeMessage(client);
+        });
+    });
+
+    document.querySelectorAll('.edit-nickname').forEach(button => {
+        button.addEventListener('click', function () {
+            const email = this.getAttribute('data-email');
+            editNickname(email);
         });
     });
 };

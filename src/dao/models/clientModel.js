@@ -24,6 +24,12 @@ const clientSchema = new mongoose.Schema({
   },
   textmessage: {
     type: String
+  },
+  nickname: {
+    type: String
+  },
+  sheet: {
+    type: String
   }
 });
 

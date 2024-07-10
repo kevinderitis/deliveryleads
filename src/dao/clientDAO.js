@@ -72,6 +72,21 @@ const updateClientPhoneByEmail = async (phone, email) => {
     }
 };
 
+const updateUserNicknameByEmail = async (email, nickname) => {
+    try {
+        const updatedClient = await Client.findOneAndUpdate({ email }, { nickname }, {
+            new: true,
+        });
+        if (!updatedClient) {
+            throw new Error('Cliente no encontrado');
+        }
+        return updatedClient;
+    } catch (error) {
+        console.error('Error al actualizar cliente por ID:', error.message);
+        throw new Error('No se pudo actualizar el cliente');
+    }
+};
+
 const updateClientPhoneByTelegramId = async (phone, tgchatid) => {
     try {
         const updatedClient = await Client.findOneAndUpdate({ tgchatid }, { phone }, {
@@ -165,4 +180,4 @@ const isAdmin = async (email) => {
     }
 };
 
-export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin, updateWelcomeMessage, updateClientPhoneByTelegramId, getClientByTelegram };
+export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin, updateWelcomeMessage, updateClientPhoneByTelegramId, getClientByTelegram, updateUserNicknameByEmail };

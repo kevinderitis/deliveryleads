@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAll, updateClient, createClient, getData, updatePhone, updateClientState, updateUserPhone, setTelegramChatId, updateWelcomeMessage, getClientByTgId, getAdminPhones } from '../controllers/clientController.js';
+import { getAll, updateClient, createClient, getData, updatePhone, updateClientState, updateUserPhone, setTelegramChatId, updateWelcomeMessage, getClientByTgId, getAdminPhones, updateUserNickname } from '../controllers/clientController.js';
 import { isAuthenticated, isAdmin } from '../middleware/middleware.js';
 
 const clientRouter = Router();
@@ -12,6 +12,7 @@ clientRouter.put('/:id/data', updateClient);
 clientRouter.put('/phone', isAuthenticated, updatePhone);
 clientRouter.put('/message/:email', isAuthenticated, updateWelcomeMessage);
 clientRouter.post('/user/phone', updateUserPhone);
+clientRouter.post('/user/nickname', updateUserNickname);
 clientRouter.put('/state', isAuthenticated, updateClientState);
 clientRouter.post('/telegram', setTelegramChatId);
 clientRouter.get('/admin/phones', getAdminPhones);

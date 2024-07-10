@@ -1,7 +1,7 @@
 import { getAllClients, updateClientById, createNewClient, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, updateClientPhoneByTelegramId, isAdmin } from "../dao/clientDAO.js";
 import { getClientOrders, getLastOrderByClientEmailService } from "../services/orderService.js";
 import { getClientDraftOrders } from "../services/draftOrderService.js";
-import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService, getClientByTelegramService, getAdminPhonesService } from "../services/clientService.js";
+import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService, getClientByTelegramService, getAdminPhonesService, updateUserNicknameByEmailService } from "../services/clientService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -125,6 +125,7 @@ export const updatePhone = async (req, res) => {
     }
 };
 
+
 export const updateUserPhone = async (req, res) => {
     let { email, phone, telegramChatId } = req.body;
 
@@ -147,6 +148,24 @@ export const updateUserPhone = async (req, res) => {
         res.status(500).json({ error: 'Error al actualizar el cliente' });
     }
 };
+
+export const updateUserNickname = async (req, res) => {
+    let { email, nickname } = req.body;
+
+    try {
+        let updatedClient = await updateUserNicknameByEmailService(nickname, email);
+
+        if (!updatedClient) {
+            return res.status(404).json({ message: 'No se pudo cambiar el nombre del cajero' });
+        }
+
+        res.status(200).json(updatedClient);
+    } catch (error) {
+        console.error('Error al actualizar cliente:', error.message);
+        res.status(500).json({ error: 'Error al actualizar el cliente' });
+    }
+};
+
 
 export const updateClientState = async (req, res) => {
     let email = req.user ? req.user.email : req.session.user.email;
