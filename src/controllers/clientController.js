@@ -214,7 +214,7 @@ export const getClientByTgId = async (req, res) => {
         let order = await getLastOrderByClientEmailService(client.email);
         let data = {
             phoneNumber: client.phone,
-            remainingLeads: order.quantity
+            remainingLeads: order.quantity ?? '0'
         };
         res.status(200).json(data);
     } catch (error) {
