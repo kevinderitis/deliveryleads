@@ -127,15 +127,15 @@ export const updatePhone = async (req, res) => {
 
 
 export const updateUserPhone = async (req, res) => {
-    let { email, phone, telegramChatId } = req.body;
+    let { email, newPhone, telegramChatId } = req.body;
 
     try {
         let updatedClient;
 
         if (telegramChatId) {
-            updatedClient = await updateClientPhoneByTelegramId(phone, telegramChatId);
+            updatedClient = await updateClientPhoneByTelegramId(newPhone, telegramChatId);
         } else {
-            updatedClient = await updateClientPhoneByEmail(phone, email);
+            updatedClient = await updateClientPhoneByEmail(newPhone, email);
         }
 
         if (!updatedClient) {
@@ -201,6 +201,21 @@ export const setTelegramChatId = async (req, res) => {
     const { userId, telegramChatId } = req.body;
     try {
         const client = await setTelegramChatIdService(userId, telegramChatId);
+        let response = {
+            clientId: client._id,
+            tgadmin: client.tgadmin
+        }
+        res.status(200).json(response);
+    } catch (error) {
+        console.error('Error al crear el cliente:', error);
+        res.status(500).json({ error: 'Error interno al crear el cliente' });
+    }
+};
+
+export const setTelegramChannelId = async (req, res) => {
+    const { userId, channelId } = req.body;
+    try {
+        const client = await setTelegramChannelIdService(userId, channelId);
         let response = {
             clientId: client._id,
             tgchatid: client.tgchatid

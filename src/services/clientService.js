@@ -33,7 +33,17 @@ export const calculateTotalLeads = orders => {
     return totalQuantity;
 };
 
-export const setTelegramChatIdService = async (userId, telegramChatId) => {
+export const setTelegramChatIdService = async (userId, tgadmin) => {
+    try {
+        const response = await updateClientById(userId, { tgadmin })
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+export const setTelegramChannelIdService = async (userId, telegramChatId) => {
     try {
         const response = await updateClientById(userId, { tgchatid: telegramChatId })
         return response;

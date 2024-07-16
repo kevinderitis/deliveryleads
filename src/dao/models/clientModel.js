@@ -22,6 +22,9 @@ const clientSchema = new mongoose.Schema({
   tgchatid: {
     type: String
   },
+  tgadmin: {
+    type: String
+  },
   textmessage: {
     type: String
   },

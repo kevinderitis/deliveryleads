@@ -57,7 +57,7 @@ async function updatePhoneNumber(phone, newPhone, email) {
     };
     try {
         const response = await fetch(url, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -117,7 +117,7 @@ async function editNumber(email, phone) {
                 Swal.showValidationMessage('Por favor ingresa un número de WhatsApp');
             }
             await updatePhoneNumber(phone, newNumber, email);
-            return newNumber;
+
         }
     }).then((result) => {
         if (result.isConfirmed) {
