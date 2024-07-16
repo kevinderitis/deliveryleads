@@ -1,7 +1,7 @@
 import { getAllClients, updateClientById, createNewClient, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, updateClientPhoneByTelegramId, isAdmin } from "../dao/clientDAO.js";
 import { getClientOrders, getLastOrderByClientEmailService } from "../services/orderService.js";
 import { getClientDraftOrders } from "../services/draftOrderService.js";
-import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService, getClientByTelegramService, getAdminPhonesService, updateUserNicknameByEmailService } from "../services/clientService.js";
+import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService, getClientByTelegramService, getAdminPhonesService, updateUserNicknameByEmailService, setTelegramChannelIdService } from "../services/clientService.js";
 
 export const getAll = async (req, res) => {
     try {

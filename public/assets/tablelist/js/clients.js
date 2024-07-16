@@ -83,7 +83,7 @@ async function updateNickname(newNickname, email) {
     };
     try {
         const response = await fetch(url, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
