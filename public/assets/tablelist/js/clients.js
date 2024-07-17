@@ -247,19 +247,20 @@ const renderClients = (clients) => {
               <span class="profile-info__name">${client.name}</span>
             </span>
           </td>
-          <td>${client.nickname}
+          <td>
           <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
-          <i class="fas fa-pencil-alt"></i>
+          ${client.nickname}
           </button>
           </td>
           <td>${client.email}</td>
-          <td>${client.phone}</td>
           <td>
-            <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
-              <i class="fas fa-pencil-alt"></i>
-            </button>
+          <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
+          ${client.phone}
+          </button>
+          </td>
+          <td>
             <button class="edit-welcome-message-btn" data-email="${client.email}" style="background-color: transparent;">
-              Editar Mensaje
+              Mensaje
             </button>
           </td>
         </tr>`;
