@@ -65,7 +65,7 @@ export const updateWelcomeMessageService = async (email, welcomeMessage) => {
 
 export const updateUserNicknameByEmailService = async (nickname, email) => {
     try {
-        const response = await updateUserNicknameByEmail(nickname, email);
+        const response = await updateUserNicknameByEmail(email, nickname);
         return response;
     } catch (error) {
         console.log(error);

@@ -102,24 +102,27 @@ async function updateNickname(newNickname, email) {
 }
 
 async function editNumber(email, phone) {
-    Swal.fire({
-        title: 'Editar número',
-        html: `
-            <input id="swal-input1" class="swal2-input" placeholder="Ingresa nuevo numero">
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'Guardar',
-        cancelButtonText: 'Cancelar',
-        focusConfirm: false,
-        preConfirm: async () => {
-            const newNumber = Swal.getPopup().querySelector('#swal-input1').value;
-            if (!newNumber) {
-                Swal.showValidationMessage('Por favor ingresa un número de WhatsApp');
+    try {
+        const result = await Swal.fire({
+            title: 'Editar número',
+            html: `
+                <input id="swal-input1" class="swal2-input" placeholder="Ingresa nuevo número">
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar',
+            cancelButtonText: 'Cancelar',
+            focusConfirm: false,
+            preConfirm: async () => {
+                const newNumber = Swal.getPopup().querySelector('#swal-input1').value;
+                if (!newNumber) {
+                    Swal.showValidationMessage('Por favor ingresa un número de WhatsApp');
+                    return false;
+                }
+                await updatePhoneNumber(phone, newNumber, email);
+                return newNumber;
             }
-            await updatePhoneNumber(phone, newNumber, email);
+        });
 
-        }
-    }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({
                 title: '¡Guardado!',
@@ -127,34 +130,45 @@ async function editNumber(email, phone) {
                 icon: 'success',
                 timer: 1000,
                 timerProgressBar: true,
-                onClose: () => {
+                didClose: () => {
                     window.location.reload();
                 }
             });
+        } else {
+            throw new Error('La edición no se realizó correctamente o fue cancelada.');
         }
-    });
+    } catch (error) {
+        Swal.fire({
+            title: 'Error',
+            text: error.message,
+            icon: 'error'
+        });
+    }
 }
 
+
 async function editNickname(email) {
-    Swal.fire({
-        title: 'Editar nombre de cajero',
-        html: `
-            <input id="swal-input1" class="swal2-input" placeholder="Ingresa nuevo nombre">
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'Guardar',
-        cancelButtonText: 'Cancelar',
-        focusConfirm: false,
-        preConfirm: async () => {
-            const newNickname = Swal.getPopup().querySelector('#swal-input1').value;
-            if (!newNickname) {
-                Swal.showValidationMessage('Por favor ingresa un nuevo nombre');
+    try {
+        const result = await Swal.fire({
+            title: 'Editar nombre de cajero',
+            html: `
+                <input id="swal-input1" class="swal2-input" placeholder="Ingresa nuevo nombre">
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar',
+            cancelButtonText: 'Cancelar',
+            focusConfirm: false,
+            preConfirm: async () => {
+                const newNickname = Swal.getPopup().querySelector('#swal-input1').value;
+                if (!newNickname) {
+                    Swal.showValidationMessage('Por favor ingresa un nuevo nombre');
+                    return false;
+                }
+                await updateNickname(newNickname, email);
+                return newNickname;
             }
-            console.log(newNickname)
-            // await updateNickname(newNickname, email);
-            return newNickname;
-        }
-    }).then((result) => {
+        });
+
         if (result.isConfirmed) {
             Swal.fire({
                 title: '¡Guardado!',
@@ -162,12 +176,20 @@ async function editNickname(email) {
                 icon: 'success',
                 timer: 1000,
                 timerProgressBar: true,
-                onClose: () => {
+                didClose: () => {
                     window.location.reload();
                 }
             });
+        } else {
+            throw new Error('La edición no se realizó correctamente o fue cancelada.');
         }
-    });
+    } catch (error) {
+        Swal.fire({
+            title: 'Error',
+            text: error.message,
+            icon: 'error'
+        });
+    }
 }
 
 async function newClient() {

@@ -1,7 +1,8 @@
 :root {
     --background: #FF5050;
     --table-background: #FFFFFF;
-    --primary-darker: #CC0000; /* Rojo oscuro */
+    --primary-darker: #CC0000;
+    /* Rojo oscuro */
     --primary: #FF5050;
     --gray: #A0A7B1;
     --odd-row: #f6f9ff;
@@ -27,7 +28,7 @@ body {
     padding: 1.5rem;
     border: 2px solid var(--gray-background);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     text-align: left;
     overflow-x: auto;
 }
@@ -190,7 +191,8 @@ body {
     border-radius: 0.5rem;
 }
 
-.pagination a:hover, a.active{
+.pagination a:hover,
+a.active {
     background: var(--odd-row);
     text-decoration: underline;
 }
@@ -227,7 +229,7 @@ body {
 }
 
 .logo-small {
-    top: 10px; 
+    top: 10px;
     left: 20px;
     position: absolute;
     height: 4rem;
@@ -236,7 +238,7 @@ body {
 }
 
 .logo-small {
-    top: 10px; 
+    top: 10px;
     left: 20px;
     position: absolute;
     height: 4rem;
@@ -245,31 +247,33 @@ body {
 }
 
 .swal2-confirm {
-    background-color: #4CAF50 !important; /* Verde */
-    border-color: #4CAF50 !important; /* Borde verde */
+    background-color: #4CAF50 !important;
+    /* Verde */
+    border-color: #4CAF50 !important;
+    /* Borde verde */
 }
 
 .swal2-cancel {
-    background-color: #999999 !important; 
+    background-color: #999999 !important;
     border-color: #999999 !important;
 }
 
 
 .swal2-deny {
-    background-color: #999999 !important; 
+    background-color: #999999 !important;
     border-color: #999999 !important;
 }
 
 #adminBtn {
-    background-color: gray; 
-    color: white; 
-  }
-  
-  #adminBtn:hover {
-    background-color: darkgray; 
-  }
+    background-color: gray;
+    color: white;
+}
 
-  #searchInput {
+#adminBtn:hover {
+    background-color: darkgray;
+}
+
+#searchInput {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -280,13 +284,42 @@ body {
 }
 
 .swal2-select {
-    width: 80%; /* Ancho completo del input y select */
-    padding: 10px; /* Relleno interior */
-    font-size: 14px; /* Tamaño de fuente */
-    border-radius: 5px; /* Borde redondeado */
-    border: 1px solid #ccc; /* Borde gris claro */
-  }
+    width: 80%;
+    /* Ancho completo del input y select */
+    padding: 10px;
+    /* Relleno interior */
+    font-size: 14px;
+    /* Tamaño de fuente */
+    border-radius: 5px;
+    /* Borde redondeado */
+    border: 1px solid #ccc;
+    /* Borde gris claro */
+}
 
-  .swal2-select {
-    height: auto; /* Altura automática */
-  }
+.swal2-select {
+    height: auto;
+}
+
+@media (max-width: 600px) {
+
+    .table-widget table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th, td {
+        white-space: nowrap;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+
+    th:nth-child(1),
+    td:nth-child(1),
+    th:nth-child(4),
+    td:nth-child(4) {
+        display: none;
+    }
+}
