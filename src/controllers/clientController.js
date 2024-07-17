@@ -150,10 +150,10 @@ export const updateUserPhone = async (req, res) => {
 };
 
 export const updateUserNickname = async (req, res) => {
-    let { email, nickname } = req.body;
+    let { email, newNickname } = req.body;
 
     try {
-        let updatedClient = await updateUserNicknameByEmailService(nickname, email);
+        let updatedClient = await updateUserNicknameByEmailService(newNickname, email);
 
         if (!updatedClient) {
             return res.status(404).json({ message: 'No se pudo cambiar el nombre del cajero' });
