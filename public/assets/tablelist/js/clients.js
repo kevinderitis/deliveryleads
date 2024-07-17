@@ -248,14 +248,14 @@ const renderClients = (clients) => {
             </span>
           </td>
           <td>
-          <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
-          ${client.nickname}
+          <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
+          ${client.phone}
           </button>
           </td>
           <td>${client.email}</td>
           <td>
-          <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
-          ${client.phone}
+          <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
+          ${client.nickname}
           </button>
           </td>
           <td>
