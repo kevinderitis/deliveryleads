@@ -300,6 +300,10 @@ a.active {
     height: auto;
 }
 
+.logo__wrapper {
+    display: block;
+}
+
 @media (max-width: 600px) {
 
     .table-widget table {
@@ -307,6 +311,7 @@ a.active {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+        margin-bottom: 30px;
     }
 
     th, td {
@@ -317,7 +322,14 @@ a.active {
 
 
     th:nth-child(1),
-    td:nth-child(1){
+    td:nth-child(1),
+    th:nth-child(3),
+    td:nth-child(3){
+        display: none;
+    }
+
+    .logo__wrapper {
         display: none;
     }
 }
+
