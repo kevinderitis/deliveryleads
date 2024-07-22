@@ -64,11 +64,11 @@
                     <li class="active">
                         <a id="tab1" href="#ordenes">Ordenes</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a id="tab2" href="#draft">Draft</a>
-                    </li>
+                    </li> -->
                     <li>
-                        <a id="tab3" href="#datos">Datos</a>
+                        <a id="tab3" href="#datos">Numero</a>
                     </li>
                     <button id="adminBtn" class="btn btn--primary" style="display: none;" onclick="redirectToAdmin()">
                         Panel de administrador
@@ -82,7 +82,7 @@
                         <thead>
                             <tr>
                                 <th>Número de Orden</th>
-                                <th>Correo Electrónico</th>
+                                <th>Usuario</th>
                                 <th>Cantidad</th>
                                 <th>Estado</th>
                             </tr>
@@ -125,9 +125,9 @@
                                 </button>
                             </td>
                             <td id="stop-td" style="display: none;">
-                                <button id="stop-button" onclick="changeClientState(false)"
+                                <button id="stop-button" onclick=""
                                     style="background-color: transparent; border: none;">
-                                    <img src="assets/profile/stop.svg" alt="Editar" width="24" height="24">
+                                    <!-- <img src="assets/profile/stop.svg" alt="Editar" width="24" height="24"> -->
                                 </button>
                             </td>
                             <td id="start-td" style="display: none;">
@@ -141,9 +141,9 @@
                 </table>
             </div>
         </main>
-        <button class="btn btn--primary" id="orderButton">
+        <!-- <button class="btn btn--primary" id="orderButton">
             Nueva orden
-        </button>
+        </button> -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/constants.js"></script>

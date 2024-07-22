@@ -93,7 +93,7 @@ function setOrderTable(orders, draft) {
     row.appendChild(quantityCell);
 
     const statusCell = document.createElement('td');
-    statusCell.textContent = order.delivered ? 'Entregado' : 'Pendiente';
+    statusCell.textContent = order.delivered ? 'Pausada' : 'Activa';
     row.appendChild(statusCell);
 
     tbody.appendChild(row);
@@ -278,6 +278,8 @@ async function editNumber() {
   Swal.fire({
     title: 'Editar número',
     html: `
+          <p>El formato del numero debe ser 549 + el numero con codigo de área sin 0, sin + y sin espacios o guiones</p>
+          <p>Ejemplo para 1154896325 -> 5491154896325  </p>
           <input id="swal-input1" class="swal2-input" placeholder="Ingresa nuevo numero">
       `,
     showCancelButton: true,
