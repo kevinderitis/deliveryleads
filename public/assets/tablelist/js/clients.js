@@ -228,7 +228,7 @@ async function newClient() {
                 icon: 'success',
                 timer: 1000,
                 timerProgressBar: true,
-                onClose: () => {
+                didClose: () => {
                     window.location.reload();
                 }
             });
@@ -236,59 +236,138 @@ async function newClient() {
     });
 }
 
-const renderClients = (clients) => {
-    const tableBody = document.getElementById('client-rows');
-    tableBody.innerHTML = clients.map((client) => {
-        return `
-        <tr>
-          <td>${client._id}</td>
-          <td class="client-profile">
-            <span class="profile-info">
-              <span class="profile-info__name">${client.name}</span>
-            </span>
-          </td>
-          <td>${client.email}</td>
-          <td>
-          <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
-          ${client.phone}
-          </button>
-          </td>
-          <td>
-          <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
-          ${client.nickname}
-          </button>
-          </td>
-          <td>
-            <button class="edit-welcome-message-btn" data-email="${client.email}" style="background-color: transparent;">
-              Mensaje
-            </button>
-          </td>
-        </tr>`;
-    }).join('');
+const renderClients = async clients => {
+    let tableBody = document.getElementById('client-rows');
+    tableBody.innerHTML = '';
 
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const email = this.getAttribute('data-email');
-            const phone = this.getAttribute('data-phone');
-            editNumber(email, phone);
+    const itemsOnPage = 10;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const start = urlParams.get('page') || 1;
+
+    const startIndex = (start - 1) * itemsOnPage;
+    const endIndex = startIndex + itemsOnPage;
+
+    const mappedClients = clients.slice(startIndex, endIndex);
+    console.log(mappedClients)
+    mappedClients.map(client => {
+        tableBody.innerHTML = mappedClients.map((client) => {
+            return `
+                        <tr>
+                          <td>${client._id}</td>
+                          <td class="client-profile">
+                            <span class="profile-info">
+                              <span class="profile-info__name">${client.name}</span>
+                            </span>
+                          </td>
+                          <td>${client.email}</td>
+                          <td>
+                          <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
+                          ${client.phone}
+                          </button>
+                          </td>
+                          <td>
+                          <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
+                          ${client.nickname}
+                          </button>
+                          </td>
+                          <td>
+                            <button class="edit-welcome-message-btn" data-email="${client.email}" style="background-color: transparent;">
+                              Mensaje
+                            </button>
+                          </td>
+                        </tr>`;
+        }).join('');
+
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const email = this.getAttribute('data-email');
+                const phone = this.getAttribute('data-phone');
+                editNumber(email, phone);
+            });
+        });
+
+        document.querySelectorAll('.edit-welcome-message-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const email = this.getAttribute('data-email');
+                const client = clients.find(client => client.email === email);
+                editWelcomeMessage(client);
+            });
+        });
+
+        document.querySelectorAll('.edit-nickname').forEach(button => {
+            button.addEventListener('click', function () {
+                const email = this.getAttribute('data-email');
+                editNickname(email);
+            });
         });
     });
 
-    document.querySelectorAll('.edit-welcome-message-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const email = this.getAttribute('data-email');
-            const client = clients.find(client => client.email === email);
-            editWelcomeMessage(client);
-        });
-    });
+    const pagination = document.querySelector('.pagination');
+    const numberOfPages = Math.ceil(clients.length / itemsOnPage);
+    const linkList = [];
 
-    document.querySelectorAll('.edit-nickname').forEach(button => {
-        button.addEventListener('click', function () {
-            const email = this.getAttribute('data-email');
-            editNickname(email);
-        });
-    });
+    for (let i = 0; i < numberOfPages; i++) {
+        const pageNumber = i + 1;
+        linkList.push(`<li><a href="?page=${pageNumber}" ${pageNumber == start ? 'class="active"' : ''} title="page ${pageNumber}">${pageNumber}</a></li>`);
+    }
+
+    pagination.innerHTML = linkList.join('');
 };
+
+// const renderClients = (clients) => {
+//     const tableBody = document.getElementById('client-rows');
+//     tableBody.innerHTML = clients.map((client) => {
+//         return `
+//         <tr>
+//           <td>${client._id}</td>
+//           <td class="client-profile">
+//             <span class="profile-info">
+//               <span class="profile-info__name">${client.name}</span>
+//             </span>
+//           </td>
+//           <td>${client.email}</td>
+//           <td>
+//           <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
+//           ${client.phone}
+//           </button>
+//           </td>
+//           <td>
+//           <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
+//           ${client.nickname}
+//           </button>
+//           </td>
+//           <td>
+//             <button class="edit-welcome-message-btn" data-email="${client.email}" style="background-color: transparent;">
+//               Mensaje
+//             </button>
+//           </td>
+//         </tr>`;
+//     }).join('');
+
+//     document.querySelectorAll('.edit-btn').forEach(button => {
+//         button.addEventListener('click', function () {
+//             const email = this.getAttribute('data-email');
+//             const phone = this.getAttribute('data-phone');
+//             editNumber(email, phone);
+//         });
+//     });
+
+//     document.querySelectorAll('.edit-welcome-message-btn').forEach(button => {
+//         button.addEventListener('click', function () {
+//             const email = this.getAttribute('data-email');
+//             const client = clients.find(client => client.email === email);
+//             editWelcomeMessage(client);
+//         });
+//     });
+
+//     document.querySelectorAll('.edit-nickname').forEach(button => {
+//         button.addEventListener('click', function () {
+//             const email = this.getAttribute('data-email');
+//             editNickname(email);
+//         });
+//     });
+// };
 
 const editWelcomeMessage = async (client) => {
     try {
@@ -317,7 +396,7 @@ const editWelcomeMessage = async (client) => {
                 icon: 'success',
                 timer: 1000,
                 timerProgressBar: true,
-                onClose: () => {
+                didClose: () => {
                     window.location.reload();
                 }
             });
@@ -385,14 +464,15 @@ const renderPagination = (numberOfPages, start) => {
 };
 
 const init = async () => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const page = urlParams.get('page') || 1;
+    // const queryString = window.location.search;
+    // const urlParams = new URLSearchParams(queryString);
+    // const page = urlParams.get('page') || 1;
+    // const itemsOnPage = 10;
 
     try {
         clients = await fetchData(`/client`);
         renderClients(clients);
-        renderPagination(Math.ceil(clients.length / itemsOnPage), page);
+        // renderPagination(Math.ceil(clients.length / itemsOnPage), page);
     } catch (error) {
         console.error('Initialization error:', error);
     }

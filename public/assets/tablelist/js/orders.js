@@ -96,7 +96,7 @@ async function newOrder() {
                 icon: 'success',
                 timer: 1000,
                 timerProgressBar: true,
-                onClose: () => {
+                didClose: () => {
                     window.location.reload();
                 }
             });
