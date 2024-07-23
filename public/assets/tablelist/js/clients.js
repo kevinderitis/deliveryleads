@@ -197,7 +197,7 @@ async function newClient() {
         title: 'Agregar nuevo cliente',
         html: `
         <input id="swal-input-name" class="swal2-input" placeholder="Ingresa nombre">
-        <input id="swal-input-email" class="swal2-input" placeholder="Ingresa email">
+        <input id="swal-input-email" class="swal2-input" placeholder="Ingresa usuario">
       `,
         showCancelButton: true,
         confirmButtonText: 'Crear',
@@ -208,7 +208,7 @@ async function newClient() {
             const email = Swal.getPopup().querySelector('#swal-input-email').value;
 
             if (!name || !email) {
-                Swal.showValidationMessage('Por favor ingresa el nombre y el email');
+                Swal.showValidationMessage('Por favor ingresa el nombre y el usuario');
                 return false;
             }
 
