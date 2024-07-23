@@ -262,18 +262,23 @@ const renderClients = async clients => {
                           </td>
                           <td>${client.email}</td>
                           <td>
-                          <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent;">
-                          ${client.phone}
+                          <button class="edit-btn" data-email="${client.email}" data-phone="${client.phone}" style="background-color: transparent; border: none">
+                          ${client.phone ? client.phone : '-'}
                           </button>
                           </td>
                           <td>
-                          <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent;">
-                          ${client.nickname}
+                          <button class="edit-nickname" data-email="${client.email}"" style="background-color: transparent; border: none">
+                          ${client.nickname ? client.nickname : '-'}
                           </button>
                           </td>
                           <td>
-                            <button class="edit-welcome-message-btn" data-email="${client.email}" style="background-color: transparent;">
-                              Mensaje
+                            <button class="edit-welcome-message-btn" data-email="${client.email}" style="background-color: transparent; border: none">
+                            <img src="assets/order/message.svg" alt="Icono" width="24" height="24" style="background-color: transparent; border: none;">
+                            </button>
+                          </td>
+                          <td>
+                            <button class="edit-password-btn" data-email="${client.email}" style="background-color: transparent; border: none">
+                            <img src="assets/order/password.svg" alt="Icono" width="24" height="24" style="background-color: transparent; border: none;">
                             </button>
                           </td>
                         </tr>`;
@@ -292,6 +297,13 @@ const renderClients = async clients => {
                 const email = this.getAttribute('data-email');
                 const client = clients.find(client => client.email === email);
                 editWelcomeMessage(client);
+            });
+        });
+
+        document.querySelectorAll('.edit-password-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const email = this.getAttribute('data-email');
+                editClientPassword(email);
             });
         });
 
@@ -411,6 +423,46 @@ const editWelcomeMessage = async (client) => {
     }
 };
 
+const editClientPassword = async (clientEmail) => {
+    try {
+        const result = await Swal.fire({
+            title: 'Ingresar nueva contraseña',
+            html: `
+            <input id="swal-input-password" class="swal2-input" placeholder="Ingresa nueva contraseña">
+        `,
+            showCancelButton: true,
+            confirmButtonText: 'Cambiar',
+            cancelButtonText: 'Cancelar',
+            focusConfirm: false,
+            preConfirm: async () => {
+                const newMessage = Swal.getPopup().querySelector('#swal-input-password').value;
+                await udpateClientPassword(clientEmail, newMessage);
+                return newMessage;
+            }
+        });
+        console.log(result.isConfirmed)
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: '¡Guardado!',
+                text: 'Se cambio la contraseña correctamente',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                didClose: () => {
+                    window.location.reload();
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error al editar la contraseña:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo editar la contraseña',
+        });
+    }
+};
+
 const updateWelcomeMessage = async (email, newMessage) => {
     try {
         const response = await fetch(`/client/message/${email}`, {
@@ -424,6 +476,25 @@ const updateWelcomeMessage = async (email, newMessage) => {
             throw new Error('Network response was not ok');
         }
         console.log(`Actualizando mensaje de bienvenida para ${email} con:`, newMessage);
+    } catch (error) {
+        console.error('Error al actualizar mensaje de bienvenida en el backend:', error);
+        throw new Error('Failed to update welcome message');
+    }
+};
+
+const udpateClientPassword = async (username, newPassword) => {
+    try {
+        const response = await fetch(`/client/password/${username}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ newPassword })
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        console.log(`Actualizando password para ${username} con:`, newPassword);
     } catch (error) {
         console.error('Error al actualizar mensaje de bienvenida en el backend:', error);
         throw new Error('Failed to update welcome message');

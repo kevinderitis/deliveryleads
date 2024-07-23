@@ -1,7 +1,7 @@
 import { getAllClients, updateClientById, createNewClient, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, updateClientPhoneByTelegramId, isAdmin } from "../dao/clientDAO.js";
 import { getClientOrders, getLastOrderByClientEmailService } from "../services/orderService.js";
 import { getClientDraftOrders } from "../services/draftOrderService.js";
-import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService, getClientByTelegramService, getAdminPhonesService, updateUserNicknameByEmailService, setTelegramChannelIdService } from "../services/clientService.js";
+import { calculateTotalLeads, setTelegramChatIdService, updateWelcomeMessageService, getClientByTelegramService, getAdminPhonesService, updateUserNicknameByEmailService, setTelegramChannelIdService, updateUserPasswordService } from "../services/clientService.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -251,6 +251,18 @@ export const getClientByTgId = async (req, res) => {
             remainingLeads: order?.quantity ?? 0
         };
         res.status(200).json(data);
+    } catch (error) {
+        console.error('Error al actualizar mensaje de bienvenida:', error);
+        res.status(500).json({ message: 'Error al obtener info de usuario' });
+    }
+}
+
+export const updateUserPassword = async (req, res) => {
+    const { username } = req.params;
+    const { newPassword } = req.body;
+    try {
+        let response = await updateUserPasswordService(username, newPassword);
+        res.status(200).json({ msg: 'Password actualizada'});
     } catch (error) {
         console.error('Error al actualizar mensaje de bienvenida:', error);
         res.status(500).json({ message: 'Error al obtener info de usuario' });

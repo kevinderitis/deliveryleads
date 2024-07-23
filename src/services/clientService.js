@@ -1,4 +1,4 @@
-import { getClientByEmail, updateClientById, updateWelcomeMessage, getClientByTelegram, updateUserNicknameByEmail } from "../dao/clientDAO.js";
+import { getClientByEmail, updateClientById, updateWelcomeMessage, getClientByTelegram, updateUserNicknameByEmail, updateUserPassword } from "../dao/clientDAO.js";
 import { getAdminPhones } from "../dao/userDAO.js";
 
 export const getClientByEmailService = async email => {
@@ -76,6 +76,16 @@ export const updateUserNicknameByEmailService = async (nickname, email) => {
 export const getAdminPhonesService = async (email, welcomeMessage) => {
     try {
         const response = await getAdminPhones();
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+export const updateUserPasswordService = async (email, newPassword) => {
+    try {
+        const response = await updateUserPassword(email, newPassword);
         return response;
     } catch (error) {
         console.log(error);

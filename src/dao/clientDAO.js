@@ -1,5 +1,6 @@
 import Client from './models/clientModel.js';
 import { getUserByEmail } from './userDAO.js';
+import bcrypt from 'bcrypt';
 
 import db from './db.js';
 
@@ -87,6 +88,22 @@ const updateUserNicknameByEmail = async (email, nickname) => {
     }
 };
 
+const updateUserPassword = async (email, newPassword) => {
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const updatedClient = await Client.findOneAndUpdate({ email }, { password: hashedPassword }, {
+            new: true,
+        });
+        if (!updatedClient) {
+            throw new Error('Cliente no encontrado');
+        }
+        return updatedClient;
+    } catch (error) {
+        console.error('Error al actualizar cliente por username:', error.message);
+        throw new Error('No se pudo actualizar el cliente');
+    }
+};
+
 const updateClientPhoneByTelegramId = async (phone, tgchatid) => {
     try {
         const updatedClient = await Client.findOneAndUpdate({ tgchatid }, { phone }, {
@@ -109,7 +126,7 @@ const updateWelcomeMessage = async (email, welcomeMessage) => {
             { textmessage: welcomeMessage },
             { new: true }
         );
-            return updatedClient;
+        return updatedClient;
     } catch (error) {
         console.error('Error al actualizar cliente por ID:', error.message);
         throw new Error('No se pudo actualizar el cliente');
@@ -180,4 +197,4 @@ const isAdmin = async (email) => {
     }
 };
 
-export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin, updateWelcomeMessage, updateClientPhoneByTelegramId, getClientByTelegram, updateUserNicknameByEmail };
+export { createNewClient, getAllClients, getClientById, updateClientById, deleteClientById, getClientByEmail, updateClientPhoneByEmail, updateClientStateByEmail, isAdmin, updateWelcomeMessage, updateClientPhoneByTelegramId, getClientByTelegram, updateUserNicknameByEmail, updateUserPassword };
