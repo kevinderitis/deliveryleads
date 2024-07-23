@@ -460,5 +460,6 @@ body {
 @media only screen and (max-width: 768px) {
     .profile {
         min-width: 21rem;
+        min-height: 20rem;
     }
 }
